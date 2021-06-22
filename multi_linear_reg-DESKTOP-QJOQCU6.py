@@ -2,10 +2,11 @@ import numpy as np
 import pandas as pd
 import scipy
 from scipy import stats
+from maxcorr_gender import max_corr_list_fc, max_corr_list_sc, gender_list, subject_number_list_sim, avg_corr_sfc_efc_list, avg_corr_sfc_esc_list
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import pingouin
-from maxcorr_gender import max_corr_list_fc, max_corr_list_sc, subject_number_list_sim, gender_list
+
 
 
 
@@ -79,50 +80,23 @@ for i in range(272):
     gender_list_filtered.append(gender_list[index])
     age_filtered.append(age_phen[index])
 
-#print(sub_num_list_old)
-#print(age_filtered)
-
-
 #print(age_filtered)
 #print(sub_num_list_old)
 #print(sub_num_list_old)
 #print(gender_list_filtered)
 
-X = np.zeros([272,2]) # column #1 is the corr_eFC_eSC, column #2 is the brain size
+X = np.zeros([272,3]) # column #1 is the corr_eFC_eSC, column #2 is the brain size
 X[:,0] = np.array(corr_eSC_ePL_list)
 X[:,1] = np.array(brain_size_list) 
-#X[:,2] = np.array(age_filtered)
+X[:,2] = np.array(age_filtered)
 #print(stats.pearsonr(X[:,0], X[:,1]))
 #x = np.array(corr_eFC_eSC_list).reshape((-1, 1))
-#Y = np.zeros([272,2])
-#Y = np.array(age_filtered) 
-Y = np.array(corr_sfc_esc_list)  
-r"""
-corr_pear_before_reg, p_pear_before_reg = stats.pearsonr(Y,age_filtered)
-print("Pearson Correlation before regression = ", corr_pear_before_reg)
-print("p - pearson before regression = ", p_pear_before_reg)
-
-
+Y = np.array(avg_corr_sfc_esc_list)  
 reg = LinearRegression().fit(X, Y)
+#print(reg.coef_)
 Y_hat = reg.predict(X)
-residue = Y - Y_hat #list of 272 x 2 residues
 
-corr_pear_after_reg, p_pear_after_reg = stats.pearsonr(residue, age_filtered)
-print("Pearson correlation after regression = ", corr_pear_after_reg)
-print("p - pearson  after regression = ", p_pear_after_reg)
-
-corr_spear_before_reg, p_spear_before_reg = stats.spearmanr(Y, age_filtered)
-print("Spearman Correlation before regression = ", corr_spear_before_reg)
-print("p - spearman before regression = ", p_spear_before_reg)
-
-
-corr_spear_after_reg, p_spear_after_reg = stats.spearmanr(residue, age_filtered)
-print("Spearman Correlation before regression = ", corr_spear_after_reg)
-print("p - spearman before regression = ", p_spear_after_reg)
-
-
-
-
+residue = Y - Y_hat #list of 272 residues
 male_res_list = []
 female_res_list = []
 male_brain_list = []
@@ -167,4 +141,3 @@ print("Correlation = ", stats.pearsonr(residue, Y)[0])
 #plt.ylabel('Residue')
 #plt.xlabel('Original Y')
 #plt.show()
-"""

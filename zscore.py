@@ -8,9 +8,10 @@ import os
 import pandas as pd
 import math
 from statistics import mean
+from maxcorr_gender_365_subs import sub_num_list_365_ordered
 
 
-sub_num_list_old = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))  ## this is the list of 272 subjects that we want to investigate 
+#sub_num_list_ = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))  ## this is the list of 272 subjects that we want to investigate 
 path1 = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\BOLD_time_all\BOLD_time_all"
 
 for sub in range(len(sub_num_list_old)):

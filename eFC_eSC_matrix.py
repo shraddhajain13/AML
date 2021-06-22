@@ -55,7 +55,7 @@ for filename in glob.glob(os.path.join(path1, '*17Networks_order_FSLMNI152_2mm_B
         sub = sub + 1
 
         
-#print(final_vec_fc)
+print(final_vec_fc)
 #print(final_vec_sc)
 #print(final_vec_pl)
 np.savetxt(r'C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_fc_without_fisher_z.csv',final_vec_fc,delimiter=",")    
