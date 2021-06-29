@@ -144,7 +144,7 @@ fig.write_html("3Dfig.html")
 #fig2 = px.scatter_3d(brain_size_male, entropy_fc_male, sampent_male)
 #px.scatter_3d() 
 #plt.legend() 
-fig1.show()
+#fig1.show()
 
 #figx = pickle.load(open('FigureObject.fig.pickle', 'rb'))
 #figx.show()

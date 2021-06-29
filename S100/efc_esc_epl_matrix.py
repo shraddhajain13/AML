@@ -48,7 +48,7 @@ for sub in range(len(sub_num_list_old)):
     final_vec_fc[:,sub] = inv_tran_avg_four
     final_vec_sc[:,sub] = matrix_sc[np.triu_indices(100, 1)]
     final_vec_pl[:,sub] = matrix_pl[np.triu_indices(100, 1)]
-    sub = sub + 1
+    #sub = sub + 1
 
         
 print(final_vec_fc)
