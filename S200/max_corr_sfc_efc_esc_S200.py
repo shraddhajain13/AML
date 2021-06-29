@@ -52,3 +52,5 @@ delay_male, delay_female = categorise_male_female(delay_list)
 coup_str_male, coup_str_female = categorise_male_female(coup_str_list)
 corr_sfc_efc_male, corr_sfc_efc_female = categorise_male_female(corr_sfc_efc_list)
 corr_sfc_esc_male, corr_sfc_esc_female = categorise_male_female(corr_sfc_esc_list)
+
+print(gender_list_filtered)
