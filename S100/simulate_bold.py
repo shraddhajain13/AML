@@ -25,7 +25,7 @@ def first_bold(subject_number):
         data = pd.read_csv(filename, header = None).values
     return data[:,0]
 
-def add_noise(first_column): #Noise is added at every time step, and for every parcellation. 
+def add_noise(first_column): #Noise is added at every time step, and for eavery parcellation. 
     #np.random.seed(i)
     intensity = 1.5
     x = np.zeros(4800)

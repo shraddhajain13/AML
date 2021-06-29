@@ -46,20 +46,20 @@ for filename in glob.glob(os.path.join(path, '*bif_all')):
     max_corr_sc = max(corr_simfn_empsc)
     #min_corr = min(corr_simfn_empfn)
     
-    max_corr_list_fc.append(max_corr_fc) #bestfit corr(sfc, efc)
-    max_corr_list_sc.append(max_corr_sc) #bestfit corr(sfc, esc)
+    max_corr_list_fc.append(max_corr_fc)
+    max_corr_list_sc.append(max_corr_sc)
     #min_corr_list.append(min_corr)
     
     max_corr_index_fc = np.argmax(corr_simfn_empfn)
     max_corr_index_sc = np.argmax(corr_simfn_empsc)
     #min_corr_index = np.argmin(corr_simfn_empfn)
     
-    max_delay_list_fc.append(delay[max_corr_index_fc]) #tau for bestfit corr(sfc, efc)
-    max_delay_list_sc.append(delay[max_corr_index_sc]) #tau for bestfit corr(sfc, esc)
+    max_delay_list_fc.append(delay[max_corr_index_fc])
+    max_delay_list_sc.append(delay[max_corr_index_sc])
     #min_delay_list.append(delay[min_corr_index])
     
-    max_coup_str_list_fc.append(coup_str[max_corr_index_fc]) #coupling strength for bestfit corr(sfc, efc)
-    max_coup_str_list_sc.append(coup_str[max_corr_index_sc]) #coupling strength for bestfit corr(sfc, esc)
+    max_coup_str_list_fc.append(coup_str[max_corr_index_fc])
+    max_coup_str_list_sc.append(coup_str[max_corr_index_sc])
     #min_coup_str_list.append(coup_str[min_corr_index])
     
 #corr_3_4, _ = stats.pearsonr(np.array(max_corr_list_3), np.array(max_corr_list_4))
