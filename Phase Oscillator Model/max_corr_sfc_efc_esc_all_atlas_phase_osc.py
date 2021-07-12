@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import glob
 import os
 import ntpath
+import pingouin as pg
+
 
 
 pheno_data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
@@ -15,6 +17,13 @@ gender_list = pheno_data[:, 3]
 sub_num_list = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))
 
 path = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\00_Fitting_results_11Parcellations_Phase_LC\Phase"
+
+female_data_sfc_efc = np.zeros([144, 12])
+male_data_sfc_efc = np.zeros([128, 12])
+
+female_data_sfc_esc = np.zeros([144, 12])
+male_data_sfc_esc = np.zeros([128, 12])
+
 
 def rearr(list_1): #function to rearrange the values in the order in which the subjects were simulated
     list_2 = []
@@ -35,10 +44,13 @@ def categorise_male_female(x): # function to split the list into M and F ; x is 
                 list2.append(x[i])
         return list1, list2
 
-for filename in glob.glob(os.path.join(path, '*bif_max')):
-    #print(type(filename))
-    fiile = str(ntpath.basename(filename))
-    data = np.loadtxt(filename, usecols = (29, 30, 31, 32, 33, 34))
+a = 0
+parcel_list = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\list_of_parcellations.txt", dtype = str)
+
+for filename in parcel_list: 
+    #print(filename)
+    n = os.path.join(path, filename)
+    data = np.loadtxt(n, usecols = (29, 30, 31, 32, 33, 34))
     k = 0
     delay_fc_list = []
     delay_sc_list = []
@@ -64,33 +76,56 @@ for filename in glob.glob(os.path.join(path, '*bif_max')):
 
         k = k + 25
 
+    corr_sfc_efc_list = np.arctanh(corr_sfc_efc_list)
+    corr_sfc_esc_list = np.arctanh(corr_sfc_esc_list)
     #delay_male, delay_female = categorise_male_female(delay_list)
     #coup_str_male, coup_str_female = categorise_male_female(coup_str_list)
     corr_sfc_efc_male, corr_sfc_efc_female = categorise_male_female(corr_sfc_efc_list)
     corr_sfc_esc_male, corr_sfc_esc_female = categorise_male_female(corr_sfc_esc_list)
 
-    t_value_fc, p_value_fc = scipy.stats.ttest_ind(corr_sfc_efc_male, corr_sfc_efc_female) #two tailed t test for corr(sFC, eFC)
-    t_value_sc, p_value_sc = scipy.stats.ttest_ind(corr_sfc_esc_male, corr_sfc_esc_female) #two tailed t test for corr(sFC, eSC)
-
-    print(fiile)
-    print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
-    print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
-
-    fc_data = [corr_sfc_efc_male, corr_sfc_efc_female] #for box plots
-    sc_data = [corr_sfc_esc_male, corr_sfc_esc_female]
-
-    fig, ax = plt.subplots(nrows = 1, ncols = 2, constrained_layout = True)
-    #fig.tight_layout()
-    fig.suptitle(fiile)
-    ax[0].boxplot(fc_data)
-    ax[0].set_xticklabels(['Male','Female'])
-    ax[0].set_ylabel('Best fit correlation between sFC and eFC')
-    ax[0].set_title('corr(sFC, eFC)')
-    ax[1].boxplot(sc_data)
-    ax[1].set_xticklabels(['Male','Female'])
-    ax[1].set_ylabel('Best fit correlation between sFC and eSC')
-    ax[1].set_title('corr(sFC, eSC)')
-    #plt.savefig(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Plots\Box plots\box_plot" + fiile + ".png")
-    #plt.show()
+    #print('Male: ', len(corr_sfc_efc_male))
+    #print('Female: ', len(corr_sfc_efc_female))
     
+    male_data_sfc_efc[:, a] = corr_sfc_efc_male
+    female_data_sfc_efc[:, a] = corr_sfc_efc_female
+
+    male_data_sfc_esc[:, a] = corr_sfc_esc_male
+    female_data_sfc_esc[:, a] = corr_sfc_esc_female
+
+    a = a + 1
     
+    t_value_fc, p_value_fc = scipy.stats.ranksums(corr_sfc_efc_male, corr_sfc_efc_female) #two tailed t test for corr(sFC, eFC)
+    t_value_sc, p_value_sc = scipy.stats.ranksums(corr_sfc_esc_male, corr_sfc_esc_female) #two tailed t test for corr(sFC, eSC)
+    eff_size_sfc_efc = pg.compute_effsize(corr_sfc_efc_male, corr_sfc_efc_female)
+    eff_size_sfc_esc = pg.compute_effsize(corr_sfc_esc_male, corr_sfc_esc_female)
+
+    print(filename)
+    print('corr(sFC, eFC): ', t_value_fc, p_value_fc, eff_size_sfc_efc)
+    print('corr(sFC, eSC): ', t_value_sc, p_value_sc, eff_size_sfc_esc)
+    
+def set_box_color(bp, color):
+    plt.setp(bp['boxes'], color=color)
+    plt.setp(bp['whiskers'], color=color)
+    plt.setp(bp['caps'], color=color)
+    plt.setp(bp['medians'], color=color)
+
+ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0', 'HO25CPU', 'HO25GPU', 'HO35', 'HO45']
+
+male_plots = plt.boxplot(male_data_sfc_esc, positions = np.array(range(12))*2 - 0.3)
+female_plots = plt.boxplot(female_data_sfc_esc, positions = np.array(range(12))*2 + 0.3)
+
+set_box_color(male_plots, 'blue') 
+set_box_color(female_plots, 'red')
+
+plt.plot([], c='blue', label='Male')
+plt.plot([], c='red', label='Female')
+plt.legend()
+
+plt.xticks(range(0, len(ticks) * 2, 2), ticks)
+plt.xlim(-2, len(ticks)*2)
+plt.title('Phase Oscillator model')
+plt.xlabel('Atlas')
+plt.ylabel('Corr(sFC, eSC)')
+#plt.tight_layout()
+plt.show()
+#print(male_data)

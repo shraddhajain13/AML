@@ -37,7 +37,7 @@ for filename in glob.glob(os.path.join(path, '*bif_all')):
     #print(filename)
     
     subject_number = (int)(ntpath.basename(filename)[0:6])
-    print(subject_number)
+    #print(subject_number)
     subject_number_list_sim.append(subject_number)
     array_txt = np.loadtxt(filename,usecols=(0, 1, 2,3))
     delay = array_txt[:,0]
@@ -47,7 +47,7 @@ for filename in glob.glob(os.path.join(path, '*bif_all')):
     max_corr_fc = max(corr_simfn_empfn)
     max_corr_sc = max(corr_simfn_empsc)
     #min_corr = min(corr_simfn_empfn)
-    print(max_corr_fc)
+    #print(max_corr_fc)
     max_corr_list_fc.append(max_corr_fc) #bestfit corr(sfc, efc)
     max_corr_list_sc.append(max_corr_sc) #bestfit corr(sfc, esc)
     #min_corr_list.append(min_corr)
@@ -64,7 +64,7 @@ for filename in glob.glob(os.path.join(path, '*bif_all')):
     max_coup_str_list_sc.append(coup_str[max_corr_index_sc]) #coupling strength for bestfit corr(sfc, esc)
     #min_coup_str_list.append(coup_str[min_corr_index])
     
-    break
+    
 #corr_3_4, _ = stats.pearsonr(np.array(max_corr_list_3), np.array(max_corr_list_4))
     #corr_3_4_list.append(corr_3_4)
     
@@ -169,6 +169,6 @@ def rearr(list_1): #function to rearrange the values in the order in which the s
 
 corr_sfc_efc_list = rearr(max_corr_list_fc)
 #print(max_corr_list_fc)
-#print(corr_sfc_efc_list)
+print(corr_sfc_efc_list)
 #print(rearr(subject_number_list_sim))
 #print(sub_num_list)
