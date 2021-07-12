@@ -87,13 +87,15 @@ plt.tight_layout()
 #plt.savefig('boxcompare.png')
 print(data_a.shape)
 """
-path = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\00_Fitting_results_11Parcellations_Phase_LC\Phase"
-parcel_list = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\list_of_parcellations.txt", dtype = str)
-#print(parcel_list)
-for filename in parcel_list:
-    n = os.path.join(path, filename)
-    print(n)
-    data = np.loadtxt(n, usecols = (29, 30, 31, 32, 33, 34))
-    print(data[:, 2])
-    break
+r"""
+path = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\00_Fitting_results_11Parcellations_Phase_LC\LC"
+parcel_list = []
+
+for filename in glob.glob(os.path.join(path, '*bif_max')):
     #print(type(filename))
+    parcel_list.append(filename)
+
+np.savetxt(r'C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\list_of_parcellations_lc.txt', parcel_list, fmt = '%s')
+"""
+
+print(np.array(range(11))*2-0.3)
