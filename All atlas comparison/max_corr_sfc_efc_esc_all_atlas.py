@@ -91,8 +91,6 @@ for filename in parcel_list:
 
         k = k + 25
 
-    corr_sfc_efc_list = np.arctanh(corr_sfc_efc_list)
-    corr_sfc_esc_list = np.arctanh(corr_sfc_esc_list)
     #delay_male, delay_female = categorise_male_female(delay_list)
     #coup_str_male, coup_str_female = categorise_male_female(coup_str_list)
     corr_sfc_efc_male, corr_sfc_efc_female = categorise_male_female(corr_sfc_efc_list)
@@ -115,11 +113,11 @@ for filename in parcel_list:
     eff_size_sfc_efc.append(pg.compute_effsize(corr_sfc_efc_male, corr_sfc_efc_female))
     eff_size_sfc_esc.append(pg.compute_effsize(corr_sfc_esc_male, corr_sfc_esc_female))
 
-    #print(filename)
-    #print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
-    #print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
+    print(filename)
+    print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
+    print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
     
-
+r"""
 male_plots = plt.boxplot(male_data_sfc_esc, positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(female_data_sfc_esc, positions = np.array(range(l))*2 + 0.3)
 
@@ -136,25 +134,17 @@ plt.title(model)
 plt.xlabel('Atlas')
 plt.ylabel('Corr(sFC, eSC)')
 plt.show()
+"""
+print('Maximum effect size corr(sFC, eFC) across atlases: ', max(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(max(eff_size_sfc_efc))])
+print('Minimum effect size corr(sFC, eFC) across atlases: ', min(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(min(eff_size_sfc_efc))])
+print('Maximum effect size corr(sFC, eSC) across atlases: ', max(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(max(eff_size_sfc_esc))])
+print('Minimum effect size corr(sFC, eSC) across atlases: ', min(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(min(eff_size_sfc_esc))])
 
-#print(eff_size_sfc_efc)
-#print(eff_size_sfc_esc)
-#eff_size = np.zeros([l, 2])
-#eff_size[:,0] = np.array(eff_size_sfc_efc)
-#eff_size[:,1] = np.array(eff_size_sfc_esc)
-#print(type(eff_size[0][0]))
-#np.savetxt(r'C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_lc.txt', eff_size)
-#print('Maximum effect size corr(sFC, eFC) across atlases: ', max(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(max(eff_size_sfc_efc))])
-#print('Minimum effect size corr(sFC, eFC) across atlases: ', min(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(min(eff_size_sfc_efc))])
-#print('Maximum effect size corr(sFC, eSC) across atlases: ', max(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(max(eff_size_sfc_esc))])
-#print('Minimum effect size corr(sFC, eSC) across atlases: ', min(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(min(eff_size_sfc_esc))])
+plt.plot(ticks, eff_size_sfc_efc,'.', label = 'Cohens D - corr(sFC, eFC)')
+plt.plot(ticks, eff_size_sfc_esc, '.', label = 'Cohens D - corr(sFC, eSC)')
 
-#plt.plot(ticks, eff_size_sfc_efc,'.', label = 'Cohens D - corr(sFC, eFC)')
-#plt.plot(ticks, eff_size_sfc_esc, '.', label = 'Cohens D - corr(sFC, eSC)')
-
-
-#plt.title('Effect sizes of different atlases - LC Model')
-#plt.ylabel('Effect size')
-#plt.xlabel('Atlas')
-#plt.legend()
-#plt.show()
+plt.title('Effect sizes of different atlases - LC Model')
+plt.ylabel('Effect size')
+plt.xlabel('Atlas')
+plt.legend()
+plt.show()
