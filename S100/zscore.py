@@ -8,7 +8,7 @@ import os
 import pandas as pd
 import math
 from statistics import mean
-from maxcorr_gender_365_subs import sub_num_list_365_ordered
+
 
 
 sub_num_list_old = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))
