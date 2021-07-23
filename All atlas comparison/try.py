@@ -33,6 +33,7 @@ np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\tryy.csv", 
 #print(type(np.c_[z]))
 #print(z)
 """
+r"""
 sub_num_list_old = np.loadtxt("C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\List_23_28_54_49_118.txt", usecols=(0))
 path = "C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\Concatenated_all_atlas\\HO25"
 efc_matrix = []
@@ -51,3 +52,7 @@ for sub in sub_num_list_old:
     #print(len(upp_tri))
     efc_matrix.append(upp_tri)
 np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\efc_HO25_temp.csv", np.array(efc_matrix).transpose(), delimiter = ',')
+"""
+for i in range(10):
+    if i<4:
+        print(i)
