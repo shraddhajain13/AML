@@ -2,14 +2,14 @@ import numpy as np
 import pandas as pd
 import scipy
 from scipy import stats
-from maxcorr_gender import max_corr_list_fc, max_corr_list_sc, gender_list, subject_number_list_sim, avg_corr_sfc_efc_list, avg_corr_sfc_esc_list
+#from maxcorr_gender import max_corr_list_fc, max_corr_list_sc, gender_list, subject_number_list_sim, avg_corr_sfc_efc_list, avg_corr_sfc_esc_list
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
-import pingouin
+#import pingouin
 
 
 
-
+r"""
 vectors_fc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_fc_zscored.csv", header = None).values
 vectors_sc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_sc_retry.csv", header = None).values
 vectors_pl = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_pl_retry.csv", header = None).values
@@ -61,8 +61,8 @@ corr_array[:,2] = corr_eFC_ePL_list
 corr_array[:,3] = corr_eSC_ePL_list
 #np.savetxt(r'C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_array_zscored.csv', corr_array, delimiter=",")
 #print(corr_array) 
-
-
+"""
+sub_num_list_old = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))
 phen_data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv") ##for phenotypical data
 phen_data_rest = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\RESTRICTED_shraddhajain13_3_3_2021_3_41_5.csv")
 sub_num_list_phen = phen_data.iloc[:,0].values
@@ -72,19 +72,21 @@ brain_size_list = []
 gender_list_filtered = []
 age_filtered = []
 #print(age_phen)
+print(brain_size_phen)
 
 
 for i in range(272):
     index = np.where(sub_num_list_phen == sub_num_list_old[i])[0][0]
     brain_size_list.append(brain_size_phen[index])
-    gender_list_filtered.append(gender_list[index])
-    age_filtered.append(age_phen[index])
+    #gender_list_filtered.append(gender_list[index])
+    #age_filtered.append(age_phen[index])
 
 #print(age_filtered)
 #print(sub_num_list_old)
 #print(sub_num_list_old)
 #print(gender_list_filtered)
-
+print(brain_size_list)
+r"""
 X = np.zeros([272,3]) # column #1 is the corr_eFC_eSC, column #2 is the brain size
 X[:,0] = np.array(corr_eSC_ePL_list)
 X[:,1] = np.array(brain_size_list) 
@@ -141,3 +143,4 @@ print("Correlation = ", stats.pearsonr(residue, Y)[0])
 #plt.ylabel('Residue')
 #plt.xlabel('Original Y')
 #plt.show()
+"""

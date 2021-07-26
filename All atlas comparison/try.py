@@ -22,17 +22,18 @@ for sub in sub_num_list_old:
         zscored_data = scipy.stats.zscore(data.values)
         np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\temp_zscore_S100\zscore_" + str(sub) + '_' + str(k) + '.csv', zscored_data, delimiter=",") 
         k = k + 1
-
+"""
 y = []
 for i in range(20):
     x = np.linspace(1, 10, 10).tolist()
     y.append(x)
 
-np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\tryy.csv", np.array(y).transpose(), delimiter = ',')
+print(np.array(y).transpose()[:, 0])
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\tryy.csv", np.array(y).transpose(), delimiter = ',')
 #z = np.array([[1,2,3], [4,5,6]]).transpose()
 #print(type(np.c_[z]))
 #print(z)
-"""
+
 r"""
 sub_num_list_old = np.loadtxt("C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\List_23_28_54_49_118.txt", usecols=(0))
 path = "C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\Concatenated_all_atlas\\HO25"
@@ -53,6 +54,3 @@ for sub in sub_num_list_old:
     efc_matrix.append(upp_tri)
 np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\efc_HO25_temp.csv", np.array(efc_matrix).transpose(), delimiter = ',')
 """
-for i in range(10):
-    if i<4:
-        print(i)

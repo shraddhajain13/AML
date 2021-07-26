@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 import glob
 import os
 import ntpath
-import pingouin as pg
+#import pingouin as pg
 
 
-#model = 'Phase Oscillator Model'
-model = 'LC Model'
+model = 'Phase Oscillator Model'
+#model = 'LC Model'
 pheno_data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
 pheno_subject_num = pheno_data[:, 0]
 gender_list = pheno_data[:, 3]
@@ -56,15 +56,19 @@ if model == 'LC Model':
     ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0', 'HO25GPU', 'HO35', 'HO45']
 
 l = len(ticks)
-female_data_sfc_efc = np.zeros([144, l])
-male_data_sfc_efc = np.zeros([128, l])
+female_data_sfc_efc = np.zeros([144, l]) #144 females
+male_data_sfc_efc = np.zeros([128, l]) #128 males
+
 female_data_sfc_esc = np.zeros([144, l])
 male_data_sfc_esc = np.zeros([128, l])
 
 eff_size_sfc_efc = []
 eff_size_sfc_esc = []
 
-for filename in parcel_list: 
+corr_sfc_efc_all_atlas = []
+corr_sfc_esc_all_atlas = []
+
+for filename in parcel_list: #looping over parcels
     data = np.loadtxt(filename, usecols = (29, 30, 31, 32, 33, 34))
     k = 0
     delay_fc_list = []
@@ -84,8 +88,10 @@ for filename in parcel_list:
 
         delay_fc_list.append(delay_sfc_efc)
         delay_sc_list.append(delay_sfc_esc)
+
         coup_str_fc_list.append(coup_str_sfc_efc)
         coup_str_sc_list.append(coup_str_sfc_esc)
+
         corr_sfc_efc_list.append(corr_sfc_efc)
         corr_sfc_esc_list.append(corr_sfc_esc)
 
@@ -105,17 +111,20 @@ for filename in parcel_list:
     male_data_sfc_esc[:, a] = corr_sfc_esc_male
     female_data_sfc_esc[:, a] = corr_sfc_esc_female
 
+    corr_sfc_efc_all_atlas.append(corr_sfc_efc_list)
+    corr_sfc_esc_all_atlas.append(corr_sfc_esc_list)
     
     a = a + 1
     
     t_value_fc, p_value_fc = scipy.stats.ranksums(corr_sfc_efc_male, corr_sfc_efc_female) #two tailed t test for corr(sFC, eFC)
     t_value_sc, p_value_sc = scipy.stats.ranksums(corr_sfc_esc_male, corr_sfc_esc_female) #two tailed t test for corr(sFC, eSC)
-    eff_size_sfc_efc.append(pg.compute_effsize(corr_sfc_efc_male, corr_sfc_efc_female))
-    eff_size_sfc_esc.append(pg.compute_effsize(corr_sfc_esc_male, corr_sfc_esc_female))
+    #eff_size_sfc_efc.append(pg.compute_effsize(corr_sfc_efc_male, corr_sfc_efc_female))
+    #eff_size_sfc_esc.append(pg.compute_effsize(corr_sfc_esc_male, corr_sfc_esc_female))
 
-    print(filename)
-    print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
-    print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
+    #print(filename)
+    #print(corr_sfc_efc_list)
+    #print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
+    #print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
     
 r"""
 male_plots = plt.boxplot(male_data_sfc_esc, positions = np.array(range(l))*2 - 0.3)
@@ -135,16 +144,21 @@ plt.xlabel('Atlas')
 plt.ylabel('Corr(sFC, eSC)')
 plt.show()
 """
-print('Maximum effect size corr(sFC, eFC) across atlases: ', max(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(max(eff_size_sfc_efc))])
-print('Minimum effect size corr(sFC, eFC) across atlases: ', min(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(min(eff_size_sfc_efc))])
-print('Maximum effect size corr(sFC, eSC) across atlases: ', max(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(max(eff_size_sfc_esc))])
-print('Minimum effect size corr(sFC, eSC) across atlases: ', min(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(min(eff_size_sfc_esc))])
+#print('Maximum effect size corr(sFC, eFC) across atlases: ', max(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(max(eff_size_sfc_efc))])
+#print('Minimum effect size corr(sFC, eFC) across atlases: ', min(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(min(eff_size_sfc_efc))])
+#print('Maximum effect size corr(sFC, eSC) across atlases: ', max(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(max(eff_size_sfc_esc))])
+#print('Minimum effect size corr(sFC, eSC) across atlases: ', min(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(min(eff_size_sfc_esc))])
 
-plt.plot(ticks, eff_size_sfc_efc,'.', label = 'Cohens D - corr(sFC, eFC)')
-plt.plot(ticks, eff_size_sfc_esc, '.', label = 'Cohens D - corr(sFC, eSC)')
+#plt.plot(ticks, eff_size_sfc_efc,'.', label = 'Cohens D - corr(sFC, eFC)')
+#plt.plot(ticks, eff_size_sfc_esc, '.', label = 'Cohens D - corr(sFC, eSC)')
 
-plt.title('Effect sizes of different atlases - LC Model')
-plt.ylabel('Effect size')
-plt.xlabel('Atlas')
-plt.legend()
-plt.show()
+#plt.title('Effect sizes of different atlases - LC Model')
+#plt.ylabel('Effect size')
+#plt.xlabel('Atlas')
+#plt.legend()
+#plt.show()
+#print(corr_sfc_efc_all_atlas)
+#print(corr_sfc_esc_all_atlas)
+
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas.csv", np.array(corr_sfc_efc_all_atlas).transpose(), delimiter = ',')
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas.csv", np.array(corr_sfc_esc_all_atlas).transpose(), delimiter = ',')
