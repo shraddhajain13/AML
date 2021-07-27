@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 import glob
 import os
 import ntpath
-#import pingouin as pg
+import pingouin as pg
 
 
-model = 'Phase Oscillator Model'
-#model = 'LC Model'
+#model = 'Phase Oscillator Model'
+model = 'LC Model'
 pheno_data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
 pheno_subject_num = pheno_data[:, 0]
 gender_list = pheno_data[:, 3]
@@ -68,6 +68,7 @@ eff_size_sfc_esc = []
 corr_sfc_efc_all_atlas = []
 corr_sfc_esc_all_atlas = []
 
+p_val = []
 for filename in parcel_list: #looping over parcels
     data = np.loadtxt(filename, usecols = (29, 30, 31, 32, 33, 34))
     k = 0
@@ -111,16 +112,17 @@ for filename in parcel_list: #looping over parcels
     male_data_sfc_esc[:, a] = corr_sfc_esc_male
     female_data_sfc_esc[:, a] = corr_sfc_esc_female
 
-    corr_sfc_efc_all_atlas.append(corr_sfc_efc_list)
-    corr_sfc_esc_all_atlas.append(corr_sfc_esc_list)
+    corr_sfc_efc_all_atlas.append(corr_sfc_efc_list) #making a list of lists - 2D list that has corr(sFC, eFC) for all atlases
+    corr_sfc_esc_all_atlas.append(corr_sfc_esc_list) #making a list of lists - 2D list that has corr(sFC, eSC) for all atlases
     
     a = a + 1
     
     t_value_fc, p_value_fc = scipy.stats.ranksums(corr_sfc_efc_male, corr_sfc_efc_female) #two tailed t test for corr(sFC, eFC)
     t_value_sc, p_value_sc = scipy.stats.ranksums(corr_sfc_esc_male, corr_sfc_esc_female) #two tailed t test for corr(sFC, eSC)
-    #eff_size_sfc_efc.append(pg.compute_effsize(corr_sfc_efc_male, corr_sfc_efc_female))
-    #eff_size_sfc_esc.append(pg.compute_effsize(corr_sfc_esc_male, corr_sfc_esc_female))
+    eff_size_sfc_efc.append(pg.compute_effsize(corr_sfc_efc_male, corr_sfc_efc_female))
+    eff_size_sfc_esc.append(pg.compute_effsize(corr_sfc_esc_male, corr_sfc_esc_female))
 
+    p_val.append(p_value_fc)
     #print(filename)
     #print(corr_sfc_efc_list)
     #print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
@@ -160,5 +162,11 @@ plt.show()
 #print(corr_sfc_efc_all_atlas)
 #print(corr_sfc_esc_all_atlas)
 
-#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas.csv", np.array(corr_sfc_efc_all_atlas).transpose(), delimiter = ',')
-#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas.csv", np.array(corr_sfc_esc_all_atlas).transpose(), delimiter = ',')
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas_lc.csv", np.array(corr_sfc_efc_all_atlas).transpose(), delimiter = ',')
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_lc.csv", np.array(corr_sfc_esc_all_atlas).transpose(), delimiter = ',')
+
+#print(model)
+#print(corr_sfc_efc_all_atlas)
+print('Effect size Corr(sFC, eFC) before regression:', eff_size_sfc_efc)
+#print('P value corr(sFC, eFC) before regression:', p_val)
+#print('Effect size Corr(sFC, eSC):', eff_size_sfc_esc)

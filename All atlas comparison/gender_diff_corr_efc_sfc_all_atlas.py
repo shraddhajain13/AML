@@ -8,12 +8,14 @@ import glob
 import os
 import ntpath
 from max_corr_sfc_efc_esc_all_atlas import gender_list_filtered
-import pingouin 
-import outdated
+import pingouin as pg
+#import outdated
 
-OUTDATED_IGNORE = 1
+#OUTDATED_IGNORE = 1
 
-atlas = ['S100', 'S200', 'S400', 'S600', 'HO0', 'HO25', 'HO35', 'HO45', 'Shen79', 'Shen156', 'Shen232'] 
+#this program is to make box plots for males and females for their values of corr(eFC, eSC) along with the wilcoxon sumrank test and cohen's D. 
+
+atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0', 'HO25', 'HO35', 'HO45'] 
 l = len(atlas)
 corr_efc_esc_male = []
 corr_efc_esc_female = []
@@ -37,6 +39,8 @@ def set_box_color(bp, color): #setting color for box plots
     plt.setp(bp['caps'], color=color)
     plt.setp(bp['medians'], color=color)
 
+eff_size = []
+p_val = []
 
 for i in range(l):
     data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values
@@ -45,16 +49,28 @@ for i in range(l):
     corr_efc_esc_male, corr_efc_esc_female = categorise_male_female(corr_efc_esc_list)
 
     t_value, p_value = scipy.stats.ranksums(corr_efc_esc_male, corr_efc_esc_female) #two tailed t test for corr(eFC, eSC)
-    
+    p_val.append(p_value)
+    eff_size.append(pg.compute_effsize(corr_efc_esc_male, corr_efc_esc_female))
+
     print(atlas[i])
-    print(corr_efc_esc_male)
-    #print(t_value, p_value)
+    #print(corr_efc_esc_male)
+    print(t_value, p_value)
 
     male_data_all_atlas.append(corr_efc_esc_male)
     female_data_all_atlas.append(corr_efc_esc_female)
 
-#print(np.array(male_data_all_atlas).transpose()[:, 0])
+print('P value: ', p_val)
+print('Effect size:', eff_size)
 
+plt.plot(atlas, eff_size, marker = '.', markersize = 20, label = 'Effect size')
+plt.plot(atlas, p_val, marker = '.', markersize = 20, label = 'Significance - p value')
+plt.xlabel('Atlas')
+plt.ylabel('Effect size (or) Significance')
+plt.title('Effect size vs Atlas for Corr(eFC, eSC)')
+plt.legend()
+plt.show()
+
+r"""
 male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3)
 
@@ -71,3 +87,4 @@ plt.title('Empirical correlations')
 plt.xlabel('Atlas')
 plt.ylabel('Corr(eFC, eSC)')
 plt.show()
+"""
