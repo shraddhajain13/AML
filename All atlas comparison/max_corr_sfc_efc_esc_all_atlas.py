@@ -128,9 +128,9 @@ for filename in parcel_list: #looping over parcels
     #print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
     #print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
     
-r"""
-male_plots = plt.boxplot(male_data_sfc_esc, positions = np.array(range(l))*2 - 0.3)
-female_plots = plt.boxplot(female_data_sfc_esc, positions = np.array(range(l))*2 + 0.3)
+
+male_plots = plt.boxplot(male_data_sfc_efc, positions = np.array(range(l))*2 - 0.3)
+female_plots = plt.boxplot(female_data_sfc_efc, positions = np.array(range(l))*2 + 0.3)
 
 set_box_color(male_plots, 'blue') 
 set_box_color(female_plots, 'red')
@@ -141,11 +141,11 @@ plt.legend()
 
 plt.xticks(range(0, (l * 2), 2), ticks)
 plt.xlim(-2, (l*2))
-plt.title(model)
+plt.title(model + " - Before Regression")
 plt.xlabel('Atlas')
-plt.ylabel('Corr(sFC, eSC)')
+plt.ylabel('Corr(sFC, eFC)')
 plt.show()
-"""
+
 #print('Maximum effect size corr(sFC, eFC) across atlases: ', max(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(max(eff_size_sfc_efc))])
 #print('Minimum effect size corr(sFC, eFC) across atlases: ', min(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(min(eff_size_sfc_efc))])
 #print('Maximum effect size corr(sFC, eSC) across atlases: ', max(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(max(eff_size_sfc_esc))])
@@ -161,12 +161,17 @@ plt.show()
 #plt.show()
 #print(corr_sfc_efc_all_atlas)
 #print(corr_sfc_esc_all_atlas)
-
+print(eff_size_sfc_efc)
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas_lc.csv", np.array(corr_sfc_efc_all_atlas).transpose(), delimiter = ',')
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_lc.csv", np.array(corr_sfc_esc_all_atlas).transpose(), delimiter = ',')
 
+#eff_size_p_val = np.zeros([l, 2])
+#eff_size_p_val[:, 0] = np.array(eff_size_sfc_efc)
+#eff_size_p_val[:, 1] = np.array(p_val)
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_br.csv", eff_size_p_val, delimiter = ',')
+
 #print(model)
 #print(corr_sfc_efc_all_atlas)
-print('Effect size Corr(sFC, eFC) before regression:', eff_size_sfc_efc)
+#print('Effect size Corr(sFC, eFC) before regression:', eff_size_sfc_efc)
 #print('P value corr(sFC, eFC) before regression:', p_val)
 #print('Effect size Corr(sFC, eSC):', eff_size_sfc_esc)
