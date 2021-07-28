@@ -55,8 +55,8 @@ if model == 'Phase Oscillator Model':
     corr_sfc_efc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas_phase.csv", header = None).values #the file corr_sfc_efc_all_atlas.csv has the value of corr(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
     corr_sfc_esc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_phase.csv", header = None).values #the file corr_sfc_esc_all_atlas.csv has the value of corr(sFC, eSC) arranged column wise for each atlas. One column has all the subjects.
 
-    corr_sfc_efc = np.delete(corr_sfc_efc, 9, 1)
-    corr_sfc_esc = np.delete(corr_sfc_esc, 9, 1)
+    corr_sfc_efc = np.delete(corr_sfc_efc, 8, 1)
+    corr_sfc_esc = np.delete(corr_sfc_esc, 8, 1)
 
 
 if model == 'LC Model':
@@ -116,8 +116,14 @@ plt.xticks(range(0, (l * 2), 2), atlas)
 plt.xlim(-2, (l*2))
 plt.title('Phase Oscillator Model - After regression of brain size and corr(eFC, eSC)')
 plt.xlabel('Atlas')
-plt.ylabel('Residuals')
+plt.ylabel('Residuals of corr(sFC, eFC)')
 plt.show()
 
-print("Effect size after regressing both brain size and corr(eFC, eSC):", eff_size)
-print("P value after regressing both brain size and corr(eFC, eSC):", p_val)
+print("Effect size after regressing both brain size and corr(eFC, eSC): ", eff_size)
+print("P value after regressing only brain size and corr(eFC, eSC): ", p_val)
+
+eff_size_p_val = np.zeros([l, 2])
+eff_size_p_val[:, 0] = np.array(eff_size)
+eff_size_p_val[:, 1] = np.array(p_val)
+
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_arbc.csv", eff_size_p_val, delimiter = ',')

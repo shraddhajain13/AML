@@ -128,7 +128,7 @@ for filename in parcel_list: #looping over parcels
     #print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
     #print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
     
-
+r"""
 male_plots = plt.boxplot(male_data_sfc_efc, positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(female_data_sfc_efc, positions = np.array(range(l))*2 + 0.3)
 
@@ -161,7 +161,7 @@ plt.show()
 #plt.show()
 #print(corr_sfc_efc_all_atlas)
 #print(corr_sfc_esc_all_atlas)
-print(eff_size_sfc_efc)
+#print(eff_size_sfc_efc)
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas_lc.csv", np.array(corr_sfc_efc_all_atlas).transpose(), delimiter = ',')
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_lc.csv", np.array(corr_sfc_esc_all_atlas).transpose(), delimiter = ',')
 
@@ -175,3 +175,4 @@ print(eff_size_sfc_efc)
 #print('Effect size Corr(sFC, eFC) before regression:', eff_size_sfc_efc)
 #print('P value corr(sFC, eFC) before regression:', p_val)
 #print('Effect size Corr(sFC, eSC):', eff_size_sfc_esc)
+"""
