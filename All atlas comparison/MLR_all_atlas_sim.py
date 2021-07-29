@@ -74,7 +74,6 @@ eff_size = []
 
 for i in range(l):
     corr_efc_esc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values[:, 1] #corr(eFC, eSC) for the given atlas
-    #print(corr_efc_esc)
     
     #########...performing MLR...###########
 
@@ -101,7 +100,7 @@ for i in range(l):
     p_val.append(p_value) #p_val is a list that stores the p value for residuals for all atlas
     eff_size.append(pg.compute_effsize(male_residual, female_residual)) #eff_size is a list that stores the effect size for residuals for all atlas
 
-
+r""""
 male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3)
 
@@ -127,3 +126,4 @@ eff_size_p_val[:, 0] = np.array(eff_size)
 eff_size_p_val[:, 1] = np.array(p_val)
 
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_arbc.csv", eff_size_p_val, delimiter = ',')
+"""
