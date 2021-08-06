@@ -53,7 +53,7 @@ if model == 'Phase Oscillator Model': #checking which model it is
 if model == 'LC Model':
     path = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\00_Fitting_results_11Parcellations_Phase_LC\LC"
     parcel_list = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\list_of_parcellations_lc.txt", dtype = str)
-    ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0', 'HO25GPU', 'HO35', 'HO45']
+    ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0', 'HO25', 'HO35', 'HO45']
 
 l = len(ticks)
 female_data_sfc_efc = np.zeros([144, l]) #144 females
@@ -127,8 +127,11 @@ for filename in parcel_list: #looping over parcels
     #print(corr_sfc_efc_list)
     #print('corr(sFC, eFC): ', t_value_fc, p_value_fc)
     #print('corr(sFC, eSC): ', t_value_sc, p_value_sc)
-    
+
 r"""
+plt.rcParams['font.size'] = '20'
+plt.figure(figsize = (16, 8))
+
 male_plots = plt.boxplot(male_data_sfc_efc, positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(female_data_sfc_efc, positions = np.array(range(l))*2 + 0.3)
 
@@ -139,13 +142,16 @@ plt.plot([], c='blue', label='Male')
 plt.plot([], c='red', label='Female')
 plt.legend()
 
-plt.xticks(range(0, (l * 2), 2), ticks)
+plt.xticks(range(0, (l * 2), 2), ticks, rotation = 45)
 plt.xlim(-2, (l*2))
-plt.title(model + " - Before Regression")
-plt.xlabel('Atlas')
-plt.ylabel('Corr(sFC, eFC)')
+#plt.title(model + " - Before Regression")
+plt.xlabel('Atlas', fontsize = 20)
+plt.ylabel('Corr(sFC, eFC)', fontsize = 20)
+plt.tight_layout()
+#plt.savefig(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Plots\New folder\corr_sfc_efc_all_atlas_phase_before_reg.png")
 plt.show()
 
+"""
 #print('Maximum effect size corr(sFC, eFC) across atlases: ', max(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(max(eff_size_sfc_efc))])
 #print('Minimum effect size corr(sFC, eFC) across atlases: ', min(eff_size_sfc_efc), ticks[eff_size_sfc_efc.index(min(eff_size_sfc_efc))])
 #print('Maximum effect size corr(sFC, eSC) across atlases: ', max(eff_size_sfc_esc), ticks[eff_size_sfc_esc.index(max(eff_size_sfc_esc))])
@@ -175,4 +181,3 @@ plt.show()
 #print('Effect size Corr(sFC, eFC) before regression:', eff_size_sfc_efc)
 #print('P value corr(sFC, eFC) before regression:', p_val)
 #print('Effect size Corr(sFC, eSC):', eff_size_sfc_esc)
-"""

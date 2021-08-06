@@ -52,15 +52,24 @@ df.to_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\emp_eff_size
 
 #########################################################
 """
+data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\phase_model_eff_size_p_val.csv").values
+plt.rcParams['font.size'] = '20'
+fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize = (16, 8))
+ax1.plot(data[:, 0], data[:, 1], label = 'Before regression', marker = '.', markersize = 10)
+ax1.plot(data[:, 0], data[:, 3], label = 'After regression of brain size', marker = '.', markersize = 10)
+ax1.plot(data[:, 0], data[:, 5], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
+ax1.set_title('Cohens D vs Atlas')
+ax1.set_ylabel('Cohens D', fontsize = 20)
 
-
-
-data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\emp_eff_size_p_val.csv").values
-plt.plot(data[:, 0], data[:, 2], label = 'Before regression', marker = '.', markersize = 10)
-plt.plot(data[:, 0], data[:, 4], label = 'After regression of brain size', marker = '.', markersize = 10)
-#plt.plot(data[:, 0], data[:, 5], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
-plt.title('Empirical correlations')
-plt.ylabel('Significance - P value')
-plt.xlabel('Atlas')
+ax2.plot(data[:, 0], data[:, 2], label = 'Before regression', marker = '.', markersize = 10)
+ax2.plot(data[:, 0], data[:, 4], label = 'After regression of brain size', marker = '.', markersize = 10)
+ax2.plot(data[:, 0], data[:, 6], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
+ax2.set_title('P value vs Atlas')
+ax2.set_ylabel('P value', fontsize = 20)
+#ax2.set_xlabel('Atlas', fontsize = 20)
+ax2.set_xlabel('Atlas', fontsize = 20)
+ax2.axhline(y = 0.05, color = 'r', linestyle = '--')
+plt.xticks(rotation = 45)
+plt.tight_layout()
 plt.legend()
 plt.show()

@@ -5,15 +5,16 @@ from scipy import stats
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import pingouin
-from maxcorr_gender import max_corr_list_fc, max_corr_list_sc, subject_number_list_sim, gender_list
+#from maxcorr_gender import max_corr_list_fc, max_corr_list_sc, subject_number_list_sim, gender_list
 
+sub_num_list_old = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))  ## this is the list of 272 subjects that we want to investigate
 
-
+r"""
 vectors_fc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_fc_zscored.csv", header = None).values
 vectors_sc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_sc_retry.csv", header = None).values
 vectors_pl = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\output_pl_retry.csv", header = None).values
 
-sub_num_list_old = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\List_23_28_54_49_118.txt",usecols=(0))  ## this is the list of 272 subjects that we want to investigate
+
 
 def rearr(list_1):
     list_2 = []
@@ -60,12 +61,13 @@ corr_array[:,2] = corr_eFC_ePL_list
 corr_array[:,3] = corr_eSC_ePL_list
 #np.savetxt(r'C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_array_zscored.csv', corr_array, delimiter=",")
 #print(corr_array) 
-
+"""
 
 phen_data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv") ##for phenotypical data
 phen_data_rest = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\RESTRICTED_shraddhajain13_3_3_2021_3_41_5.csv")
 sub_num_list_phen = phen_data.iloc[:,0].values
 brain_size_phen = phen_data.iloc[:,192].values
+gender_list = phen_data.iloc[:, 3].values
 age_phen = phen_data_rest.iloc[:,1].values
 brain_size_list = []
 gender_list_filtered = []
@@ -88,15 +90,15 @@ for i in range(272):
 #print(sub_num_list_old)
 #print(gender_list_filtered)
 
-X = np.zeros([272,2]) # column #1 is the corr_eFC_eSC, column #2 is the brain size
-X[:,0] = np.array(corr_eSC_ePL_list)
-X[:,1] = np.array(brain_size_list) 
+#X = np.zeros([272,2]) # column #1 is the corr_eFC_eSC, column #2 is the brain size
+#X[:,0] = np.array(corr_eSC_ePL_list)
+#X[:,1] = np.array(brain_size_list) 
 #X[:,2] = np.array(age_filtered)
 #print(stats.pearsonr(X[:,0], X[:,1]))
 #x = np.array(corr_eFC_eSC_list).reshape((-1, 1))
 #Y = np.zeros([272,2])
 #Y = np.array(age_filtered) 
-Y = np.array(corr_sfc_esc_list)  
+#Y = np.array(corr_sfc_esc_list)  
 r"""
 corr_pear_before_reg, p_pear_before_reg = stats.pearsonr(Y,age_filtered)
 print("Pearson Correlation before regression = ", corr_pear_before_reg)

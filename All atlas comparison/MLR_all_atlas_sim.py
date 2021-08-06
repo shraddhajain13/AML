@@ -11,8 +11,8 @@ from sklearn.linear_model import LinearRegression
 import pingouin as pg
 from max_corr_sfc_efc_esc_all_atlas import gender_list_filtered
 
-model = 'Phase Oscillator Model'
-#model = 'LC Model'
+#model = 'Phase Oscillator Model'
+model = 'LC Model'
 
 sub_num_list = np.loadtxt("C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\List_23_28_54_49_118.txt", usecols=(0))
 pheno_data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
@@ -100,7 +100,9 @@ for i in range(l):
     p_val.append(p_value) #p_val is a list that stores the p value for residuals for all atlas
     eff_size.append(pg.compute_effsize(male_residual, female_residual)) #eff_size is a list that stores the effect size for residuals for all atlas
 
-r""""
+
+plt.rcParams['font.size'] = '20'
+plt.figure(figsize = (16, 8))
 male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3)
 
@@ -109,21 +111,21 @@ set_box_color(female_plots, 'red')
 
 plt.plot([], c='blue', label='Male')
 plt.plot([], c='red', label='Female')
-plt.legend()
+plt.legend(loc = 'upper right')
 
-plt.xticks(range(0, (l * 2), 2), atlas)
+plt.xticks(range(0, (l * 2), 2), atlas, rotation = 45)
 plt.xlim(-2, (l*2))
-plt.title('Phase Oscillator Model - After regression of brain size and corr(eFC, eSC)')
-plt.xlabel('Atlas')
-plt.ylabel('Residuals of corr(sFC, eFC)')
+#plt.title(model +' - After regression of brain size')# and corr(eFC, eSC)')
+plt.xlabel('Atlas', fontsize = 20)
+plt.ylabel('Residuals of corr(sFC, eFC)', fontsize = 20)
+plt.tight_layout()
 plt.show()
 
-print("Effect size after regressing both brain size and corr(eFC, eSC): ", eff_size)
-print("P value after regressing only brain size and corr(eFC, eSC): ", p_val)
+#print("Effect size after regressing both brain size and corr(eFC, eSC): ", eff_size)
+#print("P value after regressing only brain size and corr(eFC, eSC): ", p_val)
 
-eff_size_p_val = np.zeros([l, 2])
-eff_size_p_val[:, 0] = np.array(eff_size)
-eff_size_p_val[:, 1] = np.array(p_val)
+#eff_size_p_val = np.zeros([l, 2])
+#eff_size_p_val[:, 0] = np.array(eff_size)
+#eff_size_p_val[:, 1] = np.array(p_val)
 
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_arbc.csv", eff_size_p_val, delimiter = ',')
-"""

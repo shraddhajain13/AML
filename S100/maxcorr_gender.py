@@ -167,8 +167,9 @@ def rearr(list_1): #function to rearrange the values in the order in which the s
         list_2.append(list_1[ind])
     return(list_2)
 
-corr_sfc_efc_list = rearr(max_corr_list_fc)
+gender_list_filtered = rearr(gender_list)
+#corr_sfc_efc_list = rearr(max_corr_list_fc)
 #print(max_corr_list_fc)
-print(corr_sfc_efc_list)
+#print(corr_sfc_efc_list)
 #print(rearr(subject_number_list_sim))
 #print(sub_num_list)

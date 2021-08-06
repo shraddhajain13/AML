@@ -7,9 +7,8 @@ import ntpath
 import os
 import pandas as pd
 import math
-from statistics import mean
 import antropy as ant
-from multi_linear_reg import gender_list_filtered, brain_size_list
+from multi_linear_reg import gender_list_filtered
 
 r"""
 x = np.linspace(-1,1,21)
@@ -88,9 +87,10 @@ for i in range(len(gender_list_filtered)):
             ent_fc_female_list.append(ent_fc[k])  
         k = k+1
         print(k)
+plt.rcParams['font.size'] = '20'
 plt.plot(samp_ent_female_list, ent_fc_female_list, '.', label = 'Female')
 plt.plot(samp_ent_male_list, ent_fc_male_list, '.', label = 'Male')
-plt.xlabel('Sample entropy of BOLD')
-plt.ylabel('Shannon entropy of FC')
+plt.xlabel('Sample entropy of BOLD', fontsize = 20)
+plt.ylabel('Shannon entropy of FC', fontsize = 20)
 plt.legend()
 plt.show()
