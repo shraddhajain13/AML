@@ -43,11 +43,20 @@ def categorise_male_female(x): # function to split the list into M and F ; x is 
     return list1, list2
 
 
-def set_box_color(bp, color): #setting color for box plots
-    plt.setp(bp['boxes'], color=color)
-    plt.setp(bp['whiskers'], color=color)
-    plt.setp(bp['caps'], color=color)
-    plt.setp(bp['medians'], color=color)
+def set_box_color(bp, color, flag): #setting color for box plots
+
+    if flag == 1:
+        plt.setp(bp['boxes'], color=color)
+        plt.setp(bp['whiskers'], color=color)
+        plt.setp(bp['caps'], color=color)
+        plt.setp(bp['medians'], color=color)
+
+    if flag == 0:
+        plt.setp(bp['boxes'], color=color, linestyle = '--')
+        plt.setp(bp['whiskers'], color=color, linestyle = '--')
+        plt.setp(bp['caps'], color=color, linestyle = '--')
+        plt.setp(bp['medians'], color=color, linestyle = '--')
+
 
 
 if model == 'Phase Oscillator Model':
@@ -55,15 +64,9 @@ if model == 'Phase Oscillator Model':
     corr_sfc_efc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas_phase.csv", header = None).values #the file corr_sfc_efc_all_atlas.csv has the value of corr(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
     corr_sfc_esc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_phase.csv", header = None).values #the file corr_sfc_esc_all_atlas.csv has the value of corr(sFC, eSC) arranged column wise for each atlas. One column has all the subjects.
 
-    corr_sfc_efc = np.delete(corr_sfc_efc, 8, 1)
-    corr_sfc_esc = np.delete(corr_sfc_esc, 8, 1)
-
-
 if model == 'LC Model':
     corr_sfc_efc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_efc_all_atlas_lc.csv", header = None).values #the file corr_sfc_efc_all_atlas.csv has the value of corr(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
     corr_sfc_esc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_lc.csv", header = None).values #the file corr_sfc_esc_all_atlas.csv has the value of corr(sFC, eSC) arranged column wise for each atlas. One column has all the subjects.
-
-#print(corr_sfc_efc.shape)
 
 
 residual_list_all_atlas = [] #will store all the residuals for all the parcellations column wise
@@ -79,53 +82,78 @@ for i in range(l):
 
     X = np.zeros([272, 2])
     X[:, 0] = np.array(brain_size_list_ordered)
-    X[:, 1] = np.array(corr_efc_esc)
+    X[:, 1] = np.array(np.arctanh(corr_efc_esc)) #with fisher z transform
 
-    Y = np.array(corr_sfc_efc[:, i]) #corr(sFC, eFC) for the corresponding atlas
+    Y = np.array(np.arctanh(corr_sfc_efc[:, i])) #corr(sFC, eFC) for the corresponding atlas (with fisher z transform)
 
     reg = LinearRegression().fit(X, Y)
-    Y_hat = reg.predict(X)
-    residual = Y - Y_hat #list of 272 residual after regression of X
+    coef = reg.coef_
+    Y_hat = np.dot(X, np.array(coef)) #retaining the coefficient in regression analysis
+    #print(len(Y_hat))
+    #Y_hat_1 = reg.predict(X)
+    #print(Y_hat_1 - Y_hat)
+    
+
+    residual = Y - Y_hat #list of 272 residual after regression of X without removing the constant
 
     ############...end of MLR...################
 
-    residual_list_all_atlas.append(residual)  #residual_list_all_atlas stores the residuals for all atlas column wise
+
+    residual = np.tanh(residual) #inverse fisher z transform for box plots
+    #residual_list_all_atlas.append(residual)  #residual_list_all_atlas stores the residuals for all atlas column wise
 
     male_residual, female_residual = categorise_male_female(residual)
 
     male_data_all_atlas.append(male_residual) #male_data_all_atlas stores the residuals for males for all atlas column wise
     female_data_all_atlas.append(female_residual) #female_data_all_atlas stores the residuals for females for all atlas column wise
 
-    t_value, p_value = scipy.stats.ranksums(male_residual, female_residual) #two tailed t test for corr(eFC, eSC)
+    t_value, p_value = scipy.stats.ranksums(np.arctanh(male_residual), np.arctanh(female_residual)) #two tailed t test for corr(eFC, eSC)
     p_val.append(p_value) #p_val is a list that stores the p value for residuals for all atlas
-    eff_size.append(pg.compute_effsize(male_residual, female_residual)) #eff_size is a list that stores the effect size for residuals for all atlas
+    eff_size.append(pg.compute_effsize(np.arctanh(male_residual), np.arctanh(female_residual))) #eff_size is a list that stores the effect size for residuals for all atlas
 
 
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
-male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3)
-female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3)
+boxprops = {'linewidth': 2}
+whiskerprops = {'linewidth': 2}
+capprops = {'linewidth': 2}
 
-set_box_color(male_plots, 'blue') 
-set_box_color(female_plots, 'red')
+male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3, boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops) #the ones after regression
+female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3, boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops) #the ones after regression
+
+male_data_br = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\male_data_sfc_efc_lc_br.csv", header = None).values #loading the ones before reg
+female_data_br = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\female_data_sfc_efc_lc_br.csv", header = None).values #loading the ones before reg
+
+male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
+female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
+
+
+set_box_color(male_plots, 'blue', 1) #after reg
+set_box_color(female_plots, 'red', 1) #after reg
+
+set_box_color(male_plots_br, 'grey', 0) #before reg
+set_box_color(female_plots_br, 'grey', 0) #before reg
 
 plt.plot([], c='blue', label='Male')
 plt.plot([], c='red', label='Female')
-plt.legend(loc = 'upper right')
+plt.plot([], '--', color = 'grey', label = 'Before regression')
+plt.legend(loc = 'upper left')
+
+atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] 
 
 plt.xticks(range(0, (l * 2), 2), atlas, rotation = 45)
 plt.xlim(-2, (l*2))
-#plt.title(model +' - After regression of brain size')# and corr(eFC, eSC)')
 plt.xlabel('Atlas', fontsize = 20)
-plt.ylabel('Residuals of corr(sFC, eFC)', fontsize = 20)
+plt.ylabel('corr(sFC, eFC)', fontsize = 20)
 plt.tight_layout()
 plt.show()
 
+r"""
 #print("Effect size after regressing both brain size and corr(eFC, eSC): ", eff_size)
 #print("P value after regressing only brain size and corr(eFC, eSC): ", p_val)
-
-#eff_size_p_val = np.zeros([l, 2])
-#eff_size_p_val[:, 0] = np.array(eff_size)
-#eff_size_p_val[:, 1] = np.array(p_val)
+eff_size_p_val = np.zeros([l, 2])
+eff_size_p_val[:, 0] = np.array(eff_size)
+eff_size_p_val[:, 1] = np.array(p_val)
 
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_arbc.csv", eff_size_p_val, delimiter = ',')
+"""
