@@ -131,7 +131,7 @@ for filename in parcel_list: #looping over parcels
     t_value_fc, p_value_fc = scipy.stats.ranksums(np.arctanh(corr_sfc_efc_male), np.arctanh(corr_sfc_efc_female)) #two tailed t test for corr(sFC, eFC)
     #t_value_sc, p_value_sc = scipy.stats.ranksums(corr_sfc_esc_male, corr_sfc_esc_female) #two tailed t test for corr(sFC, eSC)
     #eff_size_fc_coup.append(pg.compute_effsize(coup_str_male, coup_str_female))
-    eff_size_sfc_efc.append(pg.compute_effsize(np.arctanh(corr_sfc_efc_male), np.arctanh(corr_sfc_efc_female)))
+    eff_size_sfc_efc.append(pg.compute_effsize(np.arctanh(corr_sfc_efc_male), np.arctanh(corr_sfc_efc_female), eftype = 'hedges'))
 
     p_val.append(p_value_fc)
     

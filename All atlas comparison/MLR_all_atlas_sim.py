@@ -109,9 +109,9 @@ for i in range(l):
 
     t_value, p_value = scipy.stats.ranksums(np.arctanh(male_residual), np.arctanh(female_residual)) #two tailed t test for corr(eFC, eSC)
     p_val.append(p_value) #p_val is a list that stores the p value for residuals for all atlas
-    eff_size.append(pg.compute_effsize(np.arctanh(male_residual), np.arctanh(female_residual))) #eff_size is a list that stores the effect size for residuals for all atlas
+    eff_size.append(pg.compute_effsize(np.arctanh(male_residual), np.arctanh(female_residual), eftype = 'hedges')) #eff_size is a list that stores the effect size for residuals for all atlas
 
-
+r"""
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 boxprops = {'linewidth': 2}
@@ -147,13 +147,13 @@ plt.xlabel('Atlas', fontsize = 20)
 plt.ylabel('corr(sFC, eFC)', fontsize = 20)
 plt.tight_layout()
 plt.show()
+"""
 
-r"""
 #print("Effect size after regressing both brain size and corr(eFC, eSC): ", eff_size)
 #print("P value after regressing only brain size and corr(eFC, eSC): ", p_val)
 eff_size_p_val = np.zeros([l, 2])
 eff_size_p_val[:, 0] = np.array(eff_size)
 eff_size_p_val[:, 1] = np.array(p_val)
 
-#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_arbc.csv", eff_size_p_val, delimiter = ',')
-"""
+np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_lc_arbc.csv", eff_size_p_val, delimiter = ',')
+
