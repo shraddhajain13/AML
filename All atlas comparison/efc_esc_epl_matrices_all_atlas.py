@@ -28,14 +28,15 @@ def efc_matrix():
             #print(data_fc.shape[1])
             for i in range(data_fc.shape[1]):
                 for j in range(data_fc.shape[1]):
-                    matrix_fc[i][j] = stats.pearsonr(data_fc[:, i], data_fc[:, j])[0]
+                    matrix_fc[i][j] = stats.spearmanr(data_fc[:, i], data_fc[:, j])[0]
 
             upp_tri = matrix_fc[np.triu_indices(data_fc.shape[1], 1)]
             #print(len(upp_tri))
             efc_matrix.append(upp_tri)
-        np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\FC_matrices_all_atlas\efc_" + atlas + ".csv", np.array(efc_matrix).transpose(), delimiter = ',')
-    
+        np.savetxt(r"D:\Shraddha\FC_matrices_all_atlas_spearman\efc_sp_" + atlas + ".csv", np.array(efc_matrix).transpose(), delimiter = ',')
 
+efc_matrix()   
+r"""
 i = 0
 def sc_matrix():
     for path in path_list_for_sc:
@@ -64,3 +65,4 @@ def sc_matrix():
         i = i + 1
         np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\SC_PL_matrices_all_atlas\esc_" + atlas + ".csv", np.array(esc_matrix).transpose(), delimiter = ',')   
         np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\SC_PL_matrices_all_atlas\epl_" + atlas + ".csv", np.array(epl_matrix).transpose(), delimiter = ',')
+"""

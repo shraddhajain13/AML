@@ -58,9 +58,27 @@ df.to_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\emp_eff_size
 
 #########################################################
 """
+r"""
+#####.....This is for optimal coupling strength for corr(sFC, eFC).....######
+ 
+before_reg = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_coup_lc_br.csv", header = None).values
+eff_size_br = before_reg[:, 0]
+p_val_br = multitest.fdrcorrection(before_reg[:, 1])[1]
 
 
-data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\emp_eff_size_p_val.csv").values
+after_reg_brainsize = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_coup_lc_arb.csv", header = None).values
+eff_size_arb = after_reg_brainsize[:, 0]
+p_val_arb = multitest.fdrcorrection(after_reg_brainsize[:, 1])[1]
+
+d = {'Atlas': atlas, 'Effect size before reg': eff_size_br, 'P val before reg': p_val_br, 'Effect size after reg brain size': eff_size_arb, 'P val after regression brain size':p_val_arb}
+df = pd.DataFrame(data = d)
+df.to_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\coup_lc_eff_size_p_val.csv", index = False)
+
+#########################################################
+"""
+
+
+data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\coup_lc_eff_size_p_val.csv").values
 atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] 
 plt.rcParams['font.size'] = '20'
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize = (19, 10))
@@ -86,3 +104,4 @@ ax1.legend(bbox_to_anchor=(1, 1.0), loc='upper left')
 
 plt.tight_layout()
 plt.show()
+

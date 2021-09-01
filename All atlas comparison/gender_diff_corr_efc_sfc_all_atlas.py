@@ -46,7 +46,7 @@ plt.legend(bbox_to_anchor=(1, 1), loc='upper left')
 plt.tight_layout()
 plt.show()
 """
-r"""
+
 def set_box_color(bp, color, flag): #setting color for box plots
     if flag == 1:
         plt.setp(bp['boxes'], color=color)
@@ -114,7 +114,7 @@ np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_
 #female_data_br = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\female_data_efc_esc_emp_br.csv", header = None).values #loading the ones before reg
 
 
-
+r"""
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 boxprops = {'linewidth': 2}
