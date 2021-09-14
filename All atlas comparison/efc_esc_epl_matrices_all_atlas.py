@@ -8,34 +8,35 @@ import glob
 import os
 import ntpath
 
-path_list_for_fc = np.loadtxt("C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\path_fc.txt", dtype = str)
-path_list_for_sc = np.loadtxt("C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\path_sc.txt", dtype = str)
-sub_num_list_old = np.loadtxt("C:\\Users\\shrad\\OneDrive\\Desktop\\Juelich\\Internship\\Data\\List_23_28_54_49_118.txt", usecols=(0))
+path_list_for_fc = np.loadtxt("C:\\Users\\shrad\\Desktop\\Juelich\\Data\\path_fc.txt", dtype = str)
+path_list_for_sc = np.loadtxt("C:\\Users\\shrad\\Desktop\\Juelich\\Data\\path_sc.txt", dtype = str)
+sub_num_list_old = np.loadtxt("C:\\Users\\shrad\\Desktop\\Juelich\\Data\\List_23_28_54_49_118.txt", usecols=(0))
 
 
-def efc_matrix():
-    for path in path_list_for_fc: #has the path for the concatenated files obtained after zscoring
-        atlas = str(ntpath.basename(path))
-        print(atlas) 
-        efc_matrix = []
-        for sub in sub_num_list_old:
-            sub = str((int)(sub))
-            print(sub)
-            #for filename in glob.glob(os.path.join(path, '*'+ sub + '*.csv'):
-            file_name = os.path.join(path, 'conc_'+ sub + '.csv')
-            data_fc = pd.read_csv(file_name, header = None).values
-            matrix_fc = np.zeros([data_fc.shape[1], data_fc.shape[1]])
-            #print(data_fc.shape[1])
-            for i in range(data_fc.shape[1]):
-                for j in range(data_fc.shape[1]):
-                    matrix_fc[i][j] = stats.spearmanr(data_fc[:, i], data_fc[:, j])[0]
 
-            upp_tri = matrix_fc[np.triu_indices(data_fc.shape[1], 1)]
-            #print(len(upp_tri))
-            efc_matrix.append(upp_tri)
-        np.savetxt(r"D:\Shraddha\FC_matrices_all_atlas_spearman\efc_sp_" + atlas + ".csv", np.array(efc_matrix).transpose(), delimiter = ',')
+#for path in path_list_for_fc: #has the path for the concatenated files obtained after zscoring
+path = path_list_for_fc[1]
+atlas = str(ntpath.basename(path))
+print(atlas) 
+efc_matrix = []
+for sub in sub_num_list_old:
+    sub = str((int)(sub))
+    print(sub)
+    #for filename in glob.glob(os.path.join(path, '*'+ sub + '*.csv'):
+    file_name = os.path.join(path, 'conc_'+ sub + '.csv')
+    data_fc = pd.read_csv(file_name, header = None).values
+    matrix_fc = np.zeros([data_fc.shape[1], data_fc.shape[1]])
+    #print(data_fc.shape[1])
+    for i in range(data_fc.shape[1]):
+        for j in range(data_fc.shape[1]):
+            matrix_fc[i][j] = stats.spearmanr(data_fc[:, i], data_fc[:, j])[0]
 
-efc_matrix()   
+    upp_tri = matrix_fc[np.triu_indices(data_fc.shape[1], 1)]
+    #print(len(upp_tri))
+    efc_matrix.append(upp_tri)
+np.savetxt(r"D:\Shraddha\FC_matrices_all_atlas_spearman\efc_sp_" + atlas + ".csv", np.array(efc_matrix).transpose(), delimiter = ',')
+
+
 r"""
 i = 0
 def sc_matrix():
