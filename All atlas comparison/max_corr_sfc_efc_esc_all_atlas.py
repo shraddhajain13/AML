@@ -47,12 +47,10 @@ a = 0
 ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0', 'HO25', 'HO35', 'HO45']
 
 if model == 'Phase Oscillator Model': #checking which model it is
-    #path = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\00_Fitting_results_11Parcellations_Phase_LC\Phase"
     parcel_list = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\list_of_parcellations_phase.txt", dtype = str)
     
 
 if model == 'LC Model':
-    #path = r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\00_Fitting_results_11Parcellations_Phase_LC\LC"
     parcel_list = np.loadtxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\list_of_parcellations_lc.txt", dtype = str)
 
 
