@@ -78,30 +78,30 @@ df.to_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\coup_lc_eff_
 """
 
 
-data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\coup_lc_eff_size_p_val.csv").values
+data = pd.read_csv(r"D:\Shraddha\Data\phase_model_eff_size_p_val.csv").values
 atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] 
 plt.rcParams['font.size'] = '20'
 fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize = (19, 10))
 ax1.plot(np.array(atlas), data[:, 1], label = 'Before regression', marker = '.', markersize = 10)
 ax1.plot(np.array(atlas), data[:, 3], label = 'After regression of brain size', marker = '.', markersize = 10)
-#ax1.plot(np.array(atlas), data[:, 5], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
-#ax1.set_ylim(0, 1)
+ax1.plot(np.array(atlas), data[:, 5], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
+ax1.set_ylim(0, 1)
 ax1.yaxis.grid()
-ax1.set_title('Hedges g vs Atlas')
+ax1.set_title('Hedges g vs Atlas - Phase Oscillator model')
 ax1.set_ylabel('Hedges g', fontsize = 22)
 
 ax2.plot(np.array(atlas), data[:, 2], label = 'Before regression', marker = '.', markersize = 10)
 ax2.plot(np.array(atlas), data[:, 4], label = 'After regression of brain size', marker = '.', markersize = 10)
-#ax2.plot(np.array(atlas), data[:, 6], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
+ax2.plot(np.array(atlas), data[:, 6], label = 'After regression of brain size and corr(eFC, eSC)', marker = '.', markersize = 10)
 ax2.set_title('P value (FDR corrected) vs Atlas')
 ax2.set_ylabel('P value', fontsize = 22)
 ax2.set_xlabel('Atlas', fontsize = 22)
 ax2.axhline(y = 0.05, color = 'r', linestyle = '--')#, label = 'threshold $/alpha$')
 ax2.yaxis.grid()
 plt.xticks(rotation = 45)
-#plt.legend()
-ax1.legend(bbox_to_anchor=(1, 1.0), loc='upper left')
-
+plt.legend()
+#ax1.legend(bbox_to_anchor=(1, 1.0), loc='upper left')
 plt.tight_layout()
+plt.savefig(r"C:\Users\shrad\Desktop\phase_eff_size_p_val_temp.png", dpi = 300)
 plt.show()
 

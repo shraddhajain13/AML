@@ -7,9 +7,8 @@ import matplotlib.pyplot as plt
 import glob
 import os
 import ntpath
-from max_corr_sfc_efc_esc_all_atlas import gender_list_filtered
 import pingouin as pg
-from MLR_all_atlas_sim import brain_size_list_ordered
+from MLR_all_atlas_sim import brain_size_list_ordered, gender_list_filtered
 from sklearn.linear_model import LinearRegression
 
 x = np.linspace(1, 272, 272)
@@ -64,7 +63,7 @@ eff_size = []
 p_val = []
 
 for i in range(l):
-    data = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values
+    data = pd.read_csv(r"D:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values
     corr_efc_esc_list = data[:, 1]
 
     
@@ -90,7 +89,7 @@ for i in range(l):
     eff_size.append(pg.compute_effsize(np.arctanh(corr_efc_esc_male), np.arctanh(corr_efc_esc_female)))
 
     
-
+r"""
 print('P value: ', p_val)
 print('Effect size:', eff_size)
 
@@ -105,16 +104,16 @@ plt.show()
 eff_size_p_val_arr = np.zeros([l, 2])
 eff_size_p_val_arr[:, 0] = eff_size
 eff_size_p_val_arr[:, 1] = p_val
-np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_emp_arb.csv", eff_size_p_val_arr, delimiter = ',')
+#np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\eff_size_p_val_emp_arb.csv", eff_size_p_val_arr, delimiter = ',')
 
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\male_data_efc_esc_emp_br.csv", np.array(male_data_all_atlas).transpose(), delimiter = ',')
 #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\female_data_efc_esc_emp_br.csv", np.array(female_data_all_atlas).transpose(), delimiter = ',')
 
-#male_data_br = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\male_data_efc_esc_emp_br.csv", header = None).values #loading the ones before reg
-#female_data_br = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\female_data_efc_esc_emp_br.csv", header = None).values #loading the ones before reg
+male_data_br = pd.read_csv(r"D:\Shraddha\Data\male_data_efc_esc_emp_br.csv", header = None).values #loading the ones before reg
+female_data_br = pd.read_csv(r"D:\Shraddha\Data\female_data_efc_esc_emp_br.csv", header = None).values #loading the ones before reg
 
 
-r"""
+
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 boxprops = {'linewidth': 2}
@@ -124,19 +123,19 @@ capprops = {'linewidth': 2}
 male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3, boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops) #the ones after reg
 female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3, boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops) #the ones after reg
 
-#male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
-#female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
+male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
+female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
 
 set_box_color(male_plots, 'blue', 1) 
 set_box_color(female_plots, 'red', 1)
 
-#set_box_color(male_plots_br, 'grey', 0) 
-#set_box_color(female_plots_br, 'grey', 0)
+set_box_color(male_plots_br, 'grey', 0) 
+set_box_color(female_plots_br, 'grey', 0)
 
 
 plt.plot([], c='blue', label='Male')
 plt.plot([], c='red', label='Female')
-#plt.plot([], '--', c = 'grey', label = 'Before regression')
+plt.plot([], '--', c = 'grey', label = 'Before regression')
 plt.legend(loc = 'upper left')
 
 atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] 
@@ -144,7 +143,7 @@ plt.xticks(range(0, (l * 2), 2), atlas, rotation = 45)
 plt.xlim(-2, (l*2))
 plt.xlabel('Atlas', fontsize = 20)
 plt.ylabel('corr(eFC, eSC)', fontsize = 20)
-
 plt.tight_layout()
+plt.savefig(r"C:\Users\shrad\Desktop\corr_efc_esc_box_plot.png", dpi = 300)
 plt.show()
 """

@@ -55,21 +55,21 @@ if model == 'LC Model':
 
 
 l = len(ticks)
-#female_data_sfc_efc = np.zeros([144, l]) #144 females
-#male_data_sfc_efc = np.zeros([128, l]) #128 males
+female_data_sfc_efc = np.zeros([144, l]) #144 females
+male_data_sfc_efc = np.zeros([128, l]) #128 males
 
-female_data_fc_coup = np.zeros([144, l])
-male_data_fc_coup = np.zeros([128, l])
+#female_data_fc_coup = np.zeros([144, l])
+#male_data_fc_coup = np.zeros([128, l])
 
 #female_data_sfc_esc = np.zeros([144, l])
 #male_data_sfc_esc = np.zeros([128, l])
 
-#eff_size_sfc_efc = []
-#eff_size_sfc_esc = []
-eff_size_fc_coup = []
+eff_size_sfc_efc = []
+eff_size_sfc_esc = []
+#eff_size_fc_coup = []
 
 #corr_sfc_efc_all_atlas = []
-#corr_sfc_esc_all_atlas = []
+corr_sfc_esc_all_atlas = []
 
 coup_sfc_efc_all_atlas = []
 coup_sfc_efc_all_atlas = []
@@ -81,10 +81,10 @@ for filename in parcel_list: #looping over parcels
     k = 0
     #delay_fc_list = []
     #delay_sc_list = []
-    coup_str_fc_list = []
+    #coup_str_fc_list = []
     #coup_str_sc_list = []
-    #corr_sfc_efc_list = []
-    #corr_sfc_esc_list = []
+    corr_sfc_efc_list = []
+    corr_sfc_esc_list = []
 
     for i in range(272): #loop to extract the goodness of fit for each subject. It is the first row for each subject in the file of each parcellation.
         
@@ -99,37 +99,37 @@ for filename in parcel_list: #looping over parcels
         #delay_fc_list.append(delay_sfc_efc)
         #delay_sc_list.append(delay_sfc_esc)
 
-        coup_str_fc_list.append(coup_str_sfc_efc)
+        #coup_str_fc_list.append(coup_str_sfc_efc)
         #coup_str_sc_list.append(coup_str_sfc_esc)
 
-        #corr_sfc_efc_list.append(corr_sfc_efc)
-        #corr_sfc_esc_list.append(corr_sfc_esc)
+        corr_sfc_efc_list.append(corr_sfc_efc)
+        corr_sfc_esc_list.append(corr_sfc_esc)
 
         k = k + 25
 
     #delay_male, delay_female = categorise_male_female(delay_list)
-    coup_str_male, coup_str_female = categorise_male_female(coup_str_fc_list)
+    #coup_str_male, coup_str_female = categorise_male_female(coup_str_fc_list)
 
 
-    #corr_sfc_efc_male, corr_sfc_efc_female = categorise_male_female(corr_sfc_efc_list) #splitting into males and females
+    corr_sfc_efc_male, corr_sfc_efc_female = categorise_male_female(corr_sfc_efc_list) #splitting into males and females
     #corr_sfc_esc_male, corr_sfc_esc_female = categorise_male_female(corr_sfc_esc_list)
 
     #print('Male: ', len(corr_sfc_efc_male))
     #print('Female: ', len(corr_sfc_efc_female))
 
-    male_data_fc_coup[:, a] = coup_str_male
-    female_data_fc_coup[:, a] = coup_str_female
+    #male_data_fc_coup[:, a] = coup_str_male
+    #female_data_fc_coup[:, a] = coup_str_female
     
-    #male_data_sfc_efc[:, a] = corr_sfc_efc_male
-    #female_data_sfc_efc[:, a] = corr_sfc_efc_female
+    male_data_sfc_efc[:, a] = corr_sfc_efc_male
+    female_data_sfc_efc[:, a] = corr_sfc_efc_female
 
     #male_data_sfc_esc[:, a] = corr_sfc_esc_male
     #female_data_sfc_esc[:, a] = corr_sfc_esc_female
 
     #corr_sfc_efc_all_atlas.append(corr_sfc_efc_list) #making a list of lists - 2D list that has corr(sFC, eFC) for all atlases stored column wise
-    #corr_sfc_esc_all_atlas.append(corr_sfc_esc_list) #making a list of lists - 2D list that has corr(sFC, eSC) for all atlases stored column wise
+    corr_sfc_esc_all_atlas.append(corr_sfc_esc_list) #making a list of lists - 2D list that has corr(sFC, eSC) for all atlases stored column wise
 
-    coup_sfc_efc_all_atlas.append(coup_str_fc_list) #making a list of lists - 2D list that has coup_str(sFC, eFC) for all atlases stored column wise
+    #coup_sfc_efc_all_atlas.append(coup_str_fc_list) #making a list of lists - 2D list that has coup_str(sFC, eFC) for all atlases stored column wise
     
     a = a + 1
     
@@ -137,17 +137,17 @@ for filename in parcel_list: #looping over parcels
     #t_value_sc, p_value_sc = scipy.stats.ranksums(corr_sfc_esc_male, corr_sfc_esc_female) #two tailed t test for corr(sFC, eSC)
     #eff_size_sfc_efc.append(pg.compute_effsize(np.arctanh(corr_sfc_efc_male), np.arctanh(corr_sfc_efc_female), eftype = 'hedges'))
 
-    t_value, p_value = scipy.stats.ranksums(coup_str_male, coup_str_female)
-    eff_size_fc_coup.append(pg.compute_effsize(coup_str_male, coup_str_female, eftype = 'hedges')) #effect size for coupling strength
-    p_val.append(p_value)
+    #t_value, p_value = scipy.stats.ranksums(coup_str_male, coup_str_female)
+    #eff_size_fc_coup.append(pg.compute_effsize(coup_str_male, coup_str_female, eftype = 'hedges')) #effect size for coupling strength
+    #p_val.append(p_value)
     
 
-r""""
+r"""
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 
-male_plots = plt.boxplot(male_data_fc_coup, positions = np.array(range(l))*2 - 0.3)
-female_plots = plt.boxplot(female_data_fc_coup, positions = np.array(range(l))*2 + 0.3)
+male_plots = plt.boxplot(male_data_sfc_efc, positions = np.array(range(l))*2 - 0.3)
+female_plots = plt.boxplot(female_data_sfc_efc, positions = np.array(range(l))*2 + 0.3)
 
 set_box_color(male_plots, 'blue') 
 set_box_color(female_plots, 'red')
@@ -160,7 +160,7 @@ ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%',
 
 plt.xticks(range(0, (l * 2), 2), ticks, rotation = 45)
 plt.xlim(-2, (l*2))
-#plt.title(model + " - Before Regression")
+plt.title(model + " - Before Regression")
 plt.xlabel('Atlas', fontsize = 20)
 plt.ylabel('Optimal coupling strength for corr(sFC, eFC)', fontsize = 20)
 plt.tight_layout()
