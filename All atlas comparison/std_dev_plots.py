@@ -11,11 +11,11 @@ import pingouin as pg
 from statsmodels.stats import multitest
 
 
-path = r"D:\Shraddha\std_dev_all_atlas"
-atlas = ['S100', 'S200', 'S400', 'S600', 'HO0', 'HO25', 'HO35', 'HO45', 'Shen79', 'Shen156', 'Shen232']
-sub_num_list_old = np.loadtxt(r"D:\Shraddha\Data\List_23_28_54_49_118.txt", usecols=(0))
+path = r"E:\Shraddha\std_dev_all_atlas"
+atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232','HO0', 'HO25', 'HO35', 'HO45']
+sub_num_list_old = np.loadtxt(r"E:\Shraddha\Data\List_23_28_54_49_118.txt", usecols=(0))
 
-pheno_data = pd.read_csv(r"D:\Shraddha\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
+pheno_data = pd.read_csv(r"E:\Shraddha\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
 pheno_subject_num = pheno_data[:, 0]
 gender_list = pheno_data[:, 3]
 
@@ -48,8 +48,11 @@ def set_box_color(bp, color): #setting color for box plots
 std_eFC_male_all_atlas = np.zeros([128, 11])
 std_eFC_female_all_atlas = np.zeros([144, 11])
 
-std_time_series_male_all_atlas = np.zeros([128, 11])
-std_time_series_female_all_atlas = np.zeros([144, 11])
+mean_std_time_series_male_all_atlas = np.zeros([128, 11])
+mean_std_time_series_female_all_atlas = np.zeros([144, 11])
+
+std_of_std_time_series_male_all_atlas = np.zeros([128, 11])
+std_of_std_time_series_female_all_atlas = np.zeros([144, 11])
 
 eff_size_std_eFC = []
 p_val_std_eFC = []
@@ -57,65 +60,71 @@ p_val_std_eFC = []
 eff_size_std_time_series = []
 p_val_std_time_series = []
 
-corr_sfc_efc_phase = pd.read_csv(r"D:\Shraddha\Data\corr_sfc_efc_all_atlas_phase.csv", header = None).values
-corr_sfc_efc_lc = pd.read_csv(r"D:\Shraddha\Data\corr_sfc_efc_all_atlas_lc.csv", header = None).values
+corr_sfc_efc_phase = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_efc_all_atlas_phase.csv", header = None).values
+corr_sfc_efc_lc = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_efc_all_atlas_lc.csv", header = None).values
 
 
 for i in range(len(atlas)):
     std_eFC = pd.read_csv(os.path.join(path, "std_eFC_"+ atlas[i]) + '.csv').values[:, 1]
-    mean_std_time_series = pd.read_csv(os.path.join(path, "mean_std_time_series_"+ atlas[i]) + '.csv').values[:, 1]
-    corr_efc_esc = pd.read_csv(r"D:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + '.csv', header = None).values[:, 1]
+    #mean_std_time_series = pd.read_csv(os.path.join(path, "mean_std_time_series_"+ atlas[i]) + '.csv').values[:, 1]
+    std_of_std_time_series = pd.read_csv(os.path.join(path, "std_of_std_time_series_"+ atlas[i]) + '.csv').values[:, 1]
+    #corr_efc_esc = pd.read_csv(r"E:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + '.csv', header = None).values[:, 1]
     #print(corr_efc_esc)
-    print(std_eFC)
+    #print(std_eFC)
 
-    pearson_corr = stats.pearsonr(corr_sfc_efc_lc[:, i], corr_efc_esc)[0]
+    #pearson_corr = stats.pearsonr(std_eFC, corr_sfc_efc_phase[:, i])[0]
+    
     
     std_eFC_male, std_eFC_female = categorise_male_female(std_eFC)
     std_eFC_male_all_atlas[:, i] = np.array(std_eFC_male)
     std_eFC_female_all_atlas[:, i] = np.array(std_eFC_female)
-    t_value1, p_value1 = scipy.stats.ranksums(std_eFC_male, std_eFC_female)
-    eff_size_std_eFC.append(pg.compute_effsize(std_eFC_male, std_eFC_female, eftype = 'hedges')) #effect size for coupling strength
-    p_val_std_eFC.append(p_value1)
+    #t_value1, p_value1 = scipy.stats.ranksums(std_eFC_male, std_eFC_female)
+    #eff_size_std_eFC.append(pg.compute_effsize(std_eFC_male, std_eFC_female, eftype = 'hedges')) #effect size for coupling strength
+    #p_val_std_eFC.append(p_value1)
 
-    mean_std_time_series_male, mean_std_time_series_female = categorise_male_female(mean_std_time_series)
-    std_time_series_male_all_atlas[:, i] = np.array(mean_std_time_series_male)
-    std_time_series_female_all_atlas[:, i] = np.array(mean_std_time_series_female)
-    t_value2, p_value2 = scipy.stats.ranksums(mean_std_time_series_male, mean_std_time_series_female)
-    eff_size_std_time_series.append(pg.compute_effsize(mean_std_time_series_male, mean_std_time_series_female, eftype = 'hedges')) #effect size for coupling strength
-    p_val_std_time_series.append(p_value2)
+    #mean_std_time_series_male, mean_std_time_series_female = categorise_male_female(mean_std_time_series)
+    #std_time_series_male_all_atlas[:, i] = np.array(mean_std_time_series_male)
+    #std_time_series_female_all_atlas[:, i] = np.array(mean_std_time_series_female)
+    #t_value2, p_value2 = scipy.stats.ranksums(mean_std_time_series_male, mean_std_time_series_female)
+    #eff_size_std_time_series.append(pg.compute_effsize(mean_std_time_series_male, mean_std_time_series_female, eftype = 'hedges')) #effect size for coupling strength
+    #p_val_std_time_series.append(p_value2)
 
-    corr_sfc_efc_phase_male, corr_sfc_efc_phase_female = categorise_male_female(corr_sfc_efc_phase[:, i])
-    corr_sfc_efc_lc_male, corr_sfc_efc_lc_female = categorise_male_female(corr_sfc_efc_lc[:, i])
+    std_of_std_time_series_male, std_of_std_time_series_female = categorise_male_female(std_of_std_time_series)
+    std_of_std_time_series_male_all_atlas[:, i] = std_of_std_time_series_male
+    std_of_std_time_series_female_all_atlas[:, i] = std_of_std_time_series_female
 
-    corr_efc_esc_male, corr_efc_esc_female = categorise_male_female(corr_efc_esc)
 
-    #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\male_data_std_efc_br.csv", std_eFC_male_all_atlas, delimiter = ',') 
-    #np.savetxt(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\female_data_std_efc_br.csv", std_eFC_female_all_atlas, delimiter = ',')
+    #corr_sfc_efc_phase_male, corr_sfc_efc_phase_female = categorise_male_female(corr_sfc_efc_phase[:, i])
+    #corr_sfc_efc_lc_male, corr_sfc_efc_lc_female = categorise_male_female(corr_sfc_efc_lc[:, i])
+
+    #corr_efc_esc_male, corr_efc_esc_female = categorise_male_female(corr_efc_esc)
+
     
     
+    r"""
     plt.rcParams['font.size'] = '20'
     plt.figure(figsize = (16, 8))
-    plt.text(max(corr_efc_esc)*0.9, max(corr_sfc_efc_lc[:, i])*0.99, 'Pearsons corr = ' + str(round(pearson_corr, 2)), size = 20)#, ha = 'center', va = 'center')
-    plt.plot(corr_efc_esc_male, corr_sfc_efc_lc_male, '.', label = 'Male')
-    plt.plot(corr_efc_esc_female, corr_sfc_efc_lc_female, '.', label = 'Female')
-    plt.title(atlas[i] + ' - Limit Cycle Model')
-    plt.xlabel('corr(eFC, eSC)', fontsize = 20)
-    plt.ylabel('corr(sFC, eFC)', fontsize = 20)
+    plt.text(max(corr_sfc_efc_phase[:, i])*0.9, max(std_eFC)*0.99, 'Pearsons corr = ' + str(round(pearson_corr, 2)), size = 20)#, ha = 'center', va = 'center')
+    plt.plot(corr_sfc_efc_phase_male, std_eFC_male, '.', label = 'Male')
+    plt.plot(corr_sfc_efc_phase_female, std_eFC_female, '.', label = 'Female')
+    plt.title(atlas[i] + ' - Phase Oscillator Model')
+    plt.xlabel('corr(sFC, eFC)', fontsize = 20)
+    plt.ylabel('std of eFC', fontsize = 20)
     plt.legend(loc = 'upper left')
     plt.tight_layout()
-    plt.savefig(r"D:\Shraddha\Plots\Complexity\corr_sfc_efc_lc_vs_corr_efc_esc_" + atlas[i] + '.png')
+    plt.savefig(r"E:\Shraddha\Plots\Complexity_1\std_eFC_vs_corr_sfc_efc_phase_" + atlas[i] + '.png')
     plt.show()
-    
+    """
     
 
-r"""
+
 l = len(atlas)
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 
 
-male_plots = plt.boxplot(std_time_series_male_all_atlas, positions = np.array(range(l))*2 - 0.3)
-female_plots = plt.boxplot(std_time_series_female_all_atlas, positions = np.array(range(l))*2 + 0.3)
+male_plots = plt.boxplot(std_of_std_time_series_male_all_atlas, positions = np.array(range(l))*2 - 0.3)
+female_plots = plt.boxplot(std_of_std_time_series_female_all_atlas, positions = np.array(range(l))*2 + 0.3)
 
 set_box_color(male_plots, 'blue') 
 set_box_color(female_plots, 'red')
@@ -128,12 +137,11 @@ ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%',
 
 plt.xticks(range(0, (l * 2), 2), ticks, rotation = 45)
 plt.xlim(-2, (l*2))
-#plt.title(model + " - Before Regression")
 plt.xlabel('Atlas', fontsize = 20)
-plt.ylabel('Mean std dev of time series', fontsize = 20)
+plt.ylabel('std dev of std dev of time series', fontsize = 20)
 plt.tight_layout()
 plt.show()
-"""
+
 r"""
 atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] 
 

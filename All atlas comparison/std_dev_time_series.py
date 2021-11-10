@@ -8,11 +8,11 @@ import glob
 import os
 import ntpath
 
-sub_num_list_old = np.loadtxt(r"D:\Shraddha\Data\List_23_28_54_49_118.txt", usecols=(0))
-pathlist = np.loadtxt(r"D:\Shraddha\Data\path_for_separate_std_calc.txt", dtype = str)
+sub_num_list_old = np.loadtxt(r"E:\Shraddha\Data\List_23_28_54_49_118.txt", usecols=(0))
+pathlist = np.loadtxt(r"E:\Shraddha\Data\path_for_separate_std_calc.txt", dtype = str)
 #print(pathlist)
 i = 0
-atlas = ['S100', 'S200', 'S400', 'S600', 'HO0', 'HO25', 'HO35', 'HO45', 'Shen79', 'Shen156', 'Shen232']
+atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232','HO0', 'HO25', 'HO35', 'HO45']
 for path in pathlist:
     print(path)
     print(atlas[i])
@@ -27,13 +27,14 @@ for path in pathlist:
             num_of_parcels = data.shape[1] #calculates the number of parcels
             std_each_parcel = []
             for p in range(num_of_parcels):
-                std_each_parcel.append(np.std(data[:, p]))
-            std_each_session.append(np.mean(std_each_parcel))
-        std_each_individual.append(np.mean(std_each_session))
+                std_each_parcel.append(np.std(abs(data[:, p])))
+            std_each_parcel = np.array(std_each_parcel)
+            std_each_session.append(np.std(abs(std_each_parcel)))
+        std_each_individual.append(np.mean(std_each_session)) #taking the std of all four sessions and averaging it out
 
-    d = {'Subject' : np.array(sub_num_list_old), 'mean std dev of time series': np.array(std_each_individual)}
+    d = {'Subject' : np.array(sub_num_list_old), 'std of std dev of time series': np.array(std_each_individual)}
     df = pd.DataFrame(data = d) 
-    df.to_csv(r"D:\Shraddha\std_dev_all_atlas\mean_std_time_series_" + atlas[i] + '.csv', index = False)
+    df.to_csv(r"E:\Shraddha\std_dev_all_atlas\std_of_std_time_series_" + atlas[i] + '.csv', index = False)
 
     i = i + 1
             
