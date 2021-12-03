@@ -64,15 +64,16 @@ def set_box_color(bp, color, flag): #setting color for box plots
 if model == 'Phase Oscillator Model':
 
     #corr_sfc_efc = pd.read_csv(r"D:\Shraddha\Data\corr_sfc_efc_all_atlas_phase.csv", header = None).values #the file corr_sfc_efc_all_atlas_phase.csv has the value of corr(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
-    corr_sfc_esc = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_esc_all_atlas_phase.csv", header = None).values #the file corr_sfc_esc_all_atlas_phase.csv has the value of corr(sFC, eSC) arranged column wise for each atlas. One column has all the subjects.
-
+    #corr_sfc_esc = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_esc_all_atlas_phase.csv", header = None).values #the file corr_sfc_esc_all_atlas_phase.csv has the value of corr(sFC, eSC) arranged column wise for each atlas. One column has all the subjects.
+    corr_sfc_efc_struc_fit = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_efc_struc_fit_all_atlas_phase.csv", header = None).values #the file corr_sfc_efc_all_atlas_phase.csv has the value of corr(sFC, eFC)
     #coup_sfc_efc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\coup_sfc_efc_all_atlas_phase.csv", header = None).values #the file coup_sfc_efc_all_atlas_phase.csv has the value of coup(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
 
 if model == 'LC Model':
     #corr_sfc_efc = pd.read_csv(r"D:\Shraddha\Data\corr_sfc_efc_all_atlas_lc.csv", header = None).values #the file corr_sfc_efc_all_atlas_lc.csv has the value of corr(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
     #corr_sfc_esc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\corr_sfc_esc_all_atlas_lc.csv", header = None).values #the file corr_sfc_esc_all_atlas_lc.csv has the value of corr(sFC, eSC) arranged column wise for each atlas. One column has all the subjects.
-    corr_sfc_esc = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_esc_all_atlas_lc.csv", header = None).values
+    #corr_sfc_esc = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_esc_all_atlas_lc.csv", header = None).values
     #coup_sfc_efc = pd.read_csv(r"C:\Users\shrad\OneDrive\Desktop\Juelich\Internship\Data\coup_sfc_efc_all_atlas_lc.csv", header = None).values #the file coup_sfc_efc_all_atlas_lc.csv has the value of corr(sFC, eFC) arranged column wise for each atlas. One column has all the subjects.
+    corr_sfc_efc_struc_fit = pd.read_csv(r"E:\Shraddha\Data\corr_sfc_efc_struc_fit_all_atlas_lc.csv", header = None).values #the file corr_sfc_efc_all_atlas_phase.csv has the value of corr(sFC, eFC)
 
 residual_list_all_atlas = [] #will store all the residuals for all the parcellations column wise
 male_data_all_atlas = []
@@ -90,7 +91,7 @@ for i in range(l):
     X[:, 1] = np.array(np.arctanh(corr_efc_esc)) #with fisher z transform
 
 
-    Y = np.array(np.arctanh(corr_sfc_esc[:, i])) #corr(sFC, .) for the corresponding atlas (with fisher z transform)
+    Y = np.array(np.arctanh(corr_sfc_efc_struc_fit[:, i])) #corr(sFC, .) for the corresponding atlas (with fisher z transform)
     #Y = np.array(coup_sfc_efc[:, i]) #coup_sfc_efc for the corresponding atlas
 
     reg = LinearRegression().fit(X, Y)
@@ -120,7 +121,7 @@ for i in range(l):
     #eff_size.append(pg.compute_effsize(male_residual, female_residual, eftype = 'hedges')) # for coupling strength
     eff_size.append(pg.compute_effsize(np.arctanh(male_residual), np.arctanh(female_residual), eftype = 'hedges')) #eff_size is a list that stores the effect size for residuals for all atlas
     
-r"""
+r""""
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 boxprops = {'linewidth': 2}
@@ -130,8 +131,8 @@ capprops = {'linewidth': 2}
 male_plots = plt.boxplot(np.array(male_data_all_atlas).transpose(), positions = np.array(range(l))*2 - 0.3, boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops) #the ones after regression
 female_plots = plt.boxplot(np.array(female_data_all_atlas).transpose(), positions = np.array(range(l))*2 + 0.3, boxprops = boxprops, whiskerprops = whiskerprops, capprops = capprops) #the ones after regression
 
-male_data_br = pd.read_csv(r"E:\Shraddha\Data\male_data_sfc_esc_lc_br.csv", header = None).values #loading the ones before reg
-female_data_br = pd.read_csv(r"E:\Shraddha\Data\female_data_sfc_esc_lc_br.csv", header = None).values #loading the ones before reg
+male_data_br = pd.read_csv(r"E:\Shraddha\Data\male_data_sfc_efc_struc_fit_lc_br.csv", header = None).values #loading the ones before reg
+female_data_br = pd.read_csv(r"E:\Shraddha\Data\female_data_sfc_efc_struc_fit_lc_br.csv", header = None).values #loading the ones before reg
 
 male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
 female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
@@ -154,7 +155,7 @@ plt.xticks(range(0, (l * 2), 2), atlas, rotation = 45)
 plt.xlim(-2, (l*2))
 #plt.title('Phase Oscillator model')
 plt.xlabel('Atlas', fontsize = 20)
-plt.ylabel('corr(sFC, eSC) - Best fit', fontsize = 20)
+plt.ylabel('corr(sFC, eFC) - sFC is from structural fit', fontsize = 20)
 plt.tight_layout()
 plt.show()
 
@@ -163,5 +164,5 @@ eff_size_p_val = np.zeros([l, 2])
 eff_size_p_val[:, 0] = np.array(eff_size)
 eff_size_p_val[:, 1] = np.array(p_val)
 
-np.savetxt(r"E:\Shraddha\Data\eff_size_p_val_corr_sfc_esc_lc_arbc.csv", eff_size_p_val, delimiter = ',')
+np.savetxt(r"E:\Shraddha\Data\eff_size_p_val_corr_sfc_efc_struc_fit_lc_arbc.csv", eff_size_p_val, delimiter = ',')
 """
