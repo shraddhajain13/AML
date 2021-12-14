@@ -5,7 +5,7 @@ import random
 
 
 r"""
-efc = pd.read_csv(r"D:\Shraddha\FC_matrices_all_atlas\efc_Shen79.csv", header = None).values
+efc = pd.read_csv(r"D:\Shraddha\FC_matrices_all_atlas\efc_S200.csv", header = None).values
 sub_num_list_old = np.loadtxt(r"D:\Shraddha\Data\List_23_28_54_49_118.txt", usecols=(0))
 
 pheno_data = pd.read_csv(r"D:\Shraddha\Data\unrestricted_shraddhajain13_2_4_2021_6_34_39.csv").values
@@ -35,51 +35,56 @@ def categorise_male_female(x): # function to split the list into M and F ; x is 
 
 efc_male, efc_female = categorise_male_female(efc)
 
-np.savetxt(r"D:\Shraddha\FC_matrices_separated_male_female\Shen_79_male.csv", (np.array(efc_male)).transpose(), delimiter = ',')
-np.savetxt(r"D:\Shraddha\FC_matrices_separated_male_female\Shen_79_female.csv", (np.array(efc_female)).transpose(), delimiter = ',')
+np.savetxt(r"D:\Shraddha\FC_matrices_separated_male_female\S200_male.csv", (np.array(efc_male)).transpose(), delimiter = ',')
+np.savetxt(r"D:\Shraddha\FC_matrices_separated_male_female\S200_female.csv", (np.array(efc_female)).transpose(), delimiter = ',')
 #print((np.array(efc_male).transpose())[:, 0])
 #print((np.array(efc_female).transpose())[:, 0])
+
 """
-efc_male = pd.read_csv(r"D:\Shraddha\FC_matrices_separated_male_female\Shen_79_male.csv", header = None).values
-efc_female = pd.read_csv(r"D:\Shraddha\FC_matrices_separated_male_female\Shen_79_female.csv", header = None).values
+r"""
 
-mean_efc_male = np.zeros([efc_male.shape[0], 100])
-mean_efc_female = np.zeros([efc_female.shape[0], 100])
+efc_male = pd.read_csv(r"D:\Shraddha\FC_matrices_separated_male_female\S200_male.csv", header = None).values
+efc_female = pd.read_csv(r"D:\Shraddha\FC_matrices_separated_male_female\S200_female.csv", header = None).values
 
-for k in range(100):
+for l in list([10, 20, 30, 40, 50, 60, 70, 80, 90, 100]):
 
-    rand_list_male = []
-    rand_list_female = []
-    while len(rand_list_male)<=99: #generate a list of random numbers between 0, 127 for males
-        rand_num1 = random.randint(0, 127)
-        if(rand_num1 in rand_list_male):
-            continue
-        else:
-            rand_list_male.append(rand_num1)
+    mean_efc_male = np.zeros([efc_male.shape[0], 100])
+    mean_efc_female = np.zeros([efc_female.shape[0], 100])
 
-    while len(rand_list_female)<=99: #generate a list of random numbers between 0, 143 for females
-        rand_num2 = random.randint(0, 143)
-        if(rand_num2 in rand_list_female):
-            continue
-        else:
-            rand_list_female.append(rand_num2)
+    for k in range(100):
+
+        rand_list_male = []
+        rand_list_female = []
+        while len(rand_list_male)<=l-1: #generate a list of random numbers between 0, 127 for males
+            rand_num1 = random.randint(0, 127)
+            if(rand_num1 in rand_list_male):
+                continue
+            else:
+                rand_list_male.append(rand_num1)
+
+        while len(rand_list_female)<=l-1: #generate a list of random numbers between 0, 143 for females
+            rand_num2 = random.randint(0, 143)
+            if(rand_num2 in rand_list_female):
+                continue
+            else:
+                rand_list_female.append(rand_num2)
 
 
-    summ1 = np.zeros(efc_male.shape[0])
-    summ2 = np.zeros(efc_female.shape[0])
-    for i in range(len(rand_list_male)):
-        summ1 = summ1 + efc_male[:, rand_list_male[i]]
+        summ1 = np.zeros(efc_male.shape[0])
+        summ2 = np.zeros(efc_female.shape[0])
+        for i in range(len(rand_list_male)):
+            summ1 = summ1 + efc_male[:, rand_list_male[i]]
 
-    for j in range(len(rand_list_female)):
-        summ2 = summ2 + efc_female[:, rand_list_female[j]]
-        
-    mean_efc_male[:, k] = summ1/len(rand_list_male)
-    mean_efc_female[:, k] = summ2/len(rand_list_female)
+        for j in range(len(rand_list_female)):
+            summ2 = summ2 + efc_female[:, rand_list_female[j]]
+            
+        mean_efc_male[:, k] = summ1/len(rand_list_male)
+        mean_efc_female[:, k] = summ2/len(rand_list_female)
 
-print(len(rand_list_male))
-print(len(rand_list_female))
-#print(mean_efc_female.shape)
-np.savetxt(r"D:\Shraddha\FC_matrices_subsampled\Shen_79_sets_of_100_male.csv", mean_efc_male, delimiter = ',')
-np.savetxt(r"D:\Shraddha\FC_matrices_subsampled\Shen_79_sets_of_100_female.csv", mean_efc_female, delimiter = ',')
+    print(len(rand_list_male))
+    print(len(rand_list_female))
 
-    
+    np.savetxt(r"D:\Shraddha\FC_matrices_subsampled\S200\S200_sets_of_" + str(l) + "_male.csv", mean_efc_male, delimiter = ',')
+    np.savetxt(r"D:\Shraddha\FC_matrices_subsampled\S200\S200_sets_of_" + str(l) + "_female.csv", mean_efc_female, delimiter = ',')
+
+"""      
