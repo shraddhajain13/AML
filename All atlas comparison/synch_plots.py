@@ -41,20 +41,20 @@ def categorise_male_female(x): # function to split the list into M and F ; x is 
             list2.append(x[i])
     return list1, list2
 
-def set_box_color(bp, color): #setting color for box plots
-    #if flag == 1:
-    plt.setp(bp['boxes'], color=color)
-    plt.setp(bp['whiskers'], color=color)
-    plt.setp(bp['caps'], color=color)
-    plt.setp(bp['medians'], color=color)
+def set_box_color(bp, color, flag): #setting color for box plots
+    if flag == 1:
+        plt.setp(bp['boxes'], color=color)
+        plt.setp(bp['whiskers'], color=color)
+        plt.setp(bp['caps'], color=color)
+        plt.setp(bp['medians'], color=color)
     
-    r"""
+    
     if flag == 0:
         plt.setp(bp['boxes'], color=color, linestyle = '--')
         plt.setp(bp['whiskers'], color=color, linestyle = '--')
         plt.setp(bp['caps'], color=color, linestyle = '--')
         plt.setp(bp['medians'], color=color, linestyle = '--')
-    """
+    
     
 synch_eFC_male_all_atlas = np.zeros([128, 11])
 synch_eFC_female_all_atlas = np.zeros([144, 11])
@@ -69,7 +69,7 @@ for i in range(len(atlas)):
     synch_eFC = pd.read_csv(os.path.join(path, "synch_eFC_"+ atlas[i]) + '.csv').values[:, 1]
     corr_efc_esc = pd.read_csv(r"D:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values[:, 1] #corr(eFC, eSC) for the given atlas
     
-    r"""
+    
     ##########.....MLR....############
     
     X = np.zeros([272, 2])
@@ -87,9 +87,9 @@ for i in range(len(atlas)):
     #resdiual = np.tanh(residual)
 
     #########.....end of MLR....#########
-    """
     
-    synch_eFC_male, synch_eFC_female = categorise_male_female(synch_eFC)
+    
+    synch_eFC_male, synch_eFC_female = categorise_male_female(residual)
     synch_eFC_male_all_atlas[:, i] = np.array(synch_eFC_male)
     synch_eFC_female_all_atlas[:, i] = np.array(synch_eFC_female)
     t_value1, p_value1 = scipy.stats.ranksums(synch_eFC_male, synch_eFC_female)
@@ -109,24 +109,24 @@ plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 
 
-#male_data_br = pd.read_csv(r"D:\Shraddha\Data\male_data_synch_efc_br.csv", header = None).values #loading the ones before reg
-#female_data_br = pd.read_csv(r"D:\Shraddha\Data\female_data_synch_efc_br.csv", header = None).values #loading the ones before reg
+male_data_br = pd.read_csv(r"D:\Shraddha\Data\male_data_synch_efc_br.csv", header = None).values #loading the ones before reg
+female_data_br = pd.read_csv(r"D:\Shraddha\Data\female_data_synch_efc_br.csv", header = None).values #loading the ones before reg
 
-#male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
-#female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
+male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
+female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
 
 male_plots = plt.boxplot(synch_eFC_male_all_atlas, positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(synch_eFC_female_all_atlas, positions = np.array(range(l))*2 + 0.3)
 
-set_box_color(male_plots, 'blue')#, 1) 
-set_box_color(female_plots, 'red')#, 1)
+set_box_color(male_plots, 'blue', 1) 
+set_box_color(female_plots, 'red', 1)
 
-#set_box_color(male_plots_br, 'grey', 0) #before reg
-#set_box_color(female_plots_br, 'grey', 0) #before reg
+set_box_color(male_plots_br, 'grey', 0) #before reg
+set_box_color(female_plots_br, 'grey', 0) #before reg
 
 plt.plot([], c='blue', label='Male')
 plt.plot([], c='red', label='Female')
-#plt.plot([], '--', color = 'grey', label = 'Before regression')
+plt.plot([], '--', color = 'grey', label = 'Before regression')
 plt.legend(bbox_to_anchor=(1, 1.0), loc='upper left')
 
 ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] #only for the purpose of x axis
@@ -142,5 +142,5 @@ effsize_pval = np.zeros([l, 2])
 effsize_pval[:, 0] = np.array(eff_size_synch_eFC)
 effsize_pval[:, 1] = np.array(p_val_synch_eFC)
 
-#np.savetxt(r"D:\Shraddha\Data\synch_efc_eff_size_p_val_arbc.csv", effsize_pval, delimiter = ',')
+np.savetxt(r"D:\Shraddha\Data\synch_efc_eff_size_p_val_arbc.csv", effsize_pval, delimiter = ',')
 
