@@ -1,7 +1,6 @@
 #This program is to calculate the synchronicity of the subsampled eFC (100 per set) for sets of 10, 20, 30....,100 subjects
 
 import numpy as np
-from numpy.core.getlimits import MachArLike
 import pandas as pd
 import os
 
