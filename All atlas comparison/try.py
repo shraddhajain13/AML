@@ -8,5 +8,6 @@ import glob
 import os
 import ntpath
 
-for i in list([10, 20, 30]):
-    print(i)
+l = [0, 1, 2, 3, 4]
+arr = np.array([10, 20, 30, 40, 50])
+print(arr[l])
