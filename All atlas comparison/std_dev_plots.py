@@ -41,18 +41,18 @@ def categorise_male_female(x): # function to split the list into M and F ; x is 
             list2.append(x[i])
     return list1, list2
 
-def set_box_color(bp, color, flag): #setting color for box plots
-    if flag == 1:
-        plt.setp(bp['boxes'], color=color)
-        plt.setp(bp['whiskers'], color=color)
-        plt.setp(bp['caps'], color=color)
-        plt.setp(bp['medians'], color=color)
+def set_box_color(bp, color): #setting color for box plots
+    #if flag == 1:
+    plt.setp(bp['boxes'], color=color)
+    plt.setp(bp['whiskers'], color=color)
+    plt.setp(bp['caps'], color=color)
+    plt.setp(bp['medians'], color=color)
 
-    if flag == 0:
-        plt.setp(bp['boxes'], color=color, linestyle = '--')
-        plt.setp(bp['whiskers'], color=color, linestyle = '--')
-        plt.setp(bp['caps'], color=color, linestyle = '--')
-        plt.setp(bp['medians'], color=color, linestyle = '--')
+    #if flag == 0:
+        #plt.setp(bp['boxes'], color=color, linestyle = '--')
+        #plt.setp(bp['whiskers'], color=color, linestyle = '--')
+        #plt.setp(bp['caps'], color=color, linestyle = '--')
+        #plt.setp(bp['medians'], color=color, linestyle = '--')
 
 
 std_eFC_male_all_atlas = np.zeros([128, 11])
@@ -79,7 +79,7 @@ p_val_std_eFC = []
 
 for i in range(len(atlas)):
     std_eFC = pd.read_csv(os.path.join(path, "std_eFC_"+ atlas[i]) + '.csv').values[:, 1]
-    corr_efc_esc = pd.read_csv(r"D:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values[:, 1] #corr(eFC, eSC) for the given atlas
+    #corr_efc_esc = pd.read_csv(r"D:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + ".csv", header = None).values[:, 1] #corr(eFC, eSC) for the given atlas
     #mean_std_time_series = pd.read_csv(os.path.join(path, "mean_std_time_series_"+ atlas[i]) + '.csv').values[:, 1]
     #std_of_std_time_series = pd.read_csv(os.path.join(path, "std_of_std_time_series_"+ atlas[i]) + '.csv').values[:, 1]
     #corr_efc_esc = pd.read_csv(r"E:\Shraddha\Empirical_correlations_all_atlas\Atlas_" + atlas[i] + '.csv', header = None).values[:, 1]
@@ -87,7 +87,7 @@ for i in range(len(atlas)):
     #print(std_eFC)
 
     #pearson_corr = stats.pearsonr(std_eFC, corr_sfc_esc_best_fit_lc[:, i])[0]
-    
+    r"""
     ##########.....MLR....############
     
     X = np.zeros([272, 2])
@@ -105,9 +105,9 @@ for i in range(len(atlas)):
     #resdiual = np.tanh(residual)
 
     #########.....end of MLR....#########
+    """
     
-    
-    std_eFC_male, std_eFC_female = categorise_male_female(residual)
+    std_eFC_male, std_eFC_female = categorise_male_female(std_eFC)
     std_eFC_male_all_atlas[:, i] = np.array(std_eFC_male)
     std_eFC_female_all_atlas[:, i] = np.array(std_eFC_female)
     t_value1, p_value1 = scipy.stats.ranksums(std_eFC_male, std_eFC_female)
@@ -149,32 +149,32 @@ for i in range(len(atlas)):
     plt.show()
     """
     
-#np.savetxt(r"D:\Shraddha\Data\male_data_std_efc_br.csv", std_eFC_male_all_atlas, delimiter = ',') #this storage is for the grey plots in the background
-#np.savetxt(r"D:\Shraddha\Data\female_data_std_efc_br.csv", std_eFC_female_all_atlas, delimiter = ',') #this storage is for the grey plots in the background
-r"""
+np.savetxt(r"D:\Shraddha\Data\male_data_std_efc_br.csv", std_eFC_male_all_atlas, delimiter = ',') #this storage is for the grey plots in the background
+np.savetxt(r"D:\Shraddha\Data\female_data_std_efc_br.csv", std_eFC_female_all_atlas, delimiter = ',') #this storage is for the grey plots in the background
+
 l = len(atlas)
 plt.rcParams['font.size'] = '20'
 plt.figure(figsize = (16, 8))
 
 
-male_data_br = pd.read_csv(r"D:\Shraddha\Data\male_data_std_efc_br.csv", header = None).values #loading the ones before reg
-female_data_br = pd.read_csv(r"D:\Shraddha\Data\female_data_std_efc_br.csv", header = None).values #loading the ones before reg
+#male_data_br = pd.read_csv(r"D:\Shraddha\Data\male_data_std_efc_br.csv", header = None).values #loading the ones before reg
+#female_data_br = pd.read_csv(r"D:\Shraddha\Data\female_data_std_efc_br.csv", header = None).values #loading the ones before reg
 
-male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
-female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
+#male_plots_br = plt.boxplot(np.array(male_data_br), positions = np.array(range(l))*2 - 0.3, showfliers = False) #the ones before reg
+#female_plots_br = plt.boxplot(np.array(female_data_br), positions = np.array(range(l))*2 + 0.3, showfliers = False) #the ones before reg
 
 male_plots = plt.boxplot(std_eFC_male_all_atlas, positions = np.array(range(l))*2 - 0.3)
 female_plots = plt.boxplot(std_eFC_female_all_atlas, positions = np.array(range(l))*2 + 0.3)
 
-set_box_color(male_plots, 'blue', 1) 
-set_box_color(female_plots, 'red', 1)
+set_box_color(male_plots, 'blue')#, 1) 
+set_box_color(female_plots, 'red')#, 1)
 
-set_box_color(male_plots_br, 'grey', 0) #before reg
-set_box_color(female_plots_br, 'grey', 0) #before reg
+#set_box_color(male_plots_br, 'grey', 0) #before reg
+#set_box_color(female_plots_br, 'grey', 0) #before reg
 
 plt.plot([], c='blue', label='Male')
 plt.plot([], c='red', label='Female')
-plt.plot([], '--', color = 'grey', label = 'Before regression')
+#plt.plot([], '--', color = 'grey', label = 'Before regression')
 plt.legend(bbox_to_anchor=(1, 1.0), loc='upper left')
 
 ticks = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] #only for the purpose of x axis
@@ -190,8 +190,8 @@ effsize_pval = np.zeros([l, 2])
 effsize_pval[:, 0] = np.array(eff_size_std_eFC)
 effsize_pval[:, 1] = np.array(p_val_std_eFC)
 
-np.savetxt(r"D:\Shraddha\Data\std_efc_eff_size_p_val_arbc.csv", effsize_pval, delimiter = ',')
-"""
+np.savetxt(r"D:\Shraddha\Data\std_efc_eff_size_p_val_br.csv", effsize_pval, delimiter = ',')
+
 r"""
 
 atlas = ['S100', 'S200', 'S400', 'S600', 'Shen79', 'Shen156', 'Shen232', 'HO0%', 'HO25%', 'HO35%', 'HO45%'] 
